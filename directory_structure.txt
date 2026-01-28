@@ -1,0 +1,53 @@
+restoration-visa-toolkit/
+│
+├── README.md
+│
+├── 00_executive_overview/
+│   └── index.html
+│
+├── 01_policy_rationale/
+│   ├── systems-map.html
+│   └── economic-logic.html
+│
+├── 02_visa_framework/
+│   ├── eligibility.html
+│   ├── rights-and-obligations.html
+│   └── transition-timeline.html
+│
+├── 03_arrival_buffer/
+│   ├── housing-hotels.html
+│   ├── food-access.html
+│   └── healthcare-enrollment.html
+│
+├── 04_restoration_tracks/
+│   ├── fruit-tree-corridors.html
+│   ├── soil-water.html
+│   └── urban-periurban-greening.html
+│
+├── 05_shelter_and_building/
+│   ├── prefab-systems.html
+│   ├── open-blueprints.html
+│   └── skills-certification.html
+│
+├── 06_economic_modeling/
+│   ├── cost-curves.html
+│   ├── roi-horizons.html
+│   └── avoided-costs.html
+│
+├── 07_risk_and_safeguards/
+│   ├── ethics.html
+│   ├── labor-standards.html
+│   └── auditability.html
+│
+├── 08_case_studies_and_pilots/
+│   ├── rural-repopulation.html
+│   ├── fire-recovery-zones.html
+│   └── drought-regions.html
+│
+├── 09_legislative_hooks/
+│   ├── pilot-authority.html
+│   ├── funding-mechanisms.html
+│   └── interdepartmental-alignment.html
+│
+└── 10_public_facing_summary/
+    └── index.html
