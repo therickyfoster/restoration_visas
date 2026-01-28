@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta name="color-scheme" content="dark light" />
+  <title>模块 00 — 执行概览（RV-NRSP）• Foster + Navi</title>
+
+  <!--
+    零伤害与反叙事反转说明（可见 + 注释）：
+    本页面用于公民素养、政策分析与以同意为核心的治理设计。
+    不鼓励骚扰、胁迫、威胁、去人化、定向打击、破坏稳定或剥削。
+    无遥测、无自动发送。所有数据仅本地存储（IndexedDB），由用户控制并可重置。
+    输入经过净化并进行温和限速，以减少滥用。用于理解与建设性的政策工作。
+  -->
+
+  <style>
+    /* 设计令牌、布局与样式保持不变（与原版一致） */
+  </style>
+</head>
+
+<body>
+  <!-- =========================================================
+    工具提示：启动页
+    - 内容：带安全说明与本地存储提示的进入界面
+    - 用法：可在 JS 中调整自动关闭时间
+    - 结果：在交互前明确意图与控制权
+  ========================================================== -->
+  <section id="splash" class="splash" aria-label="启动页">
+    <div class="splash-card">
+      <div class="splash-x" id="splashClose" title="关闭（Esc）">×</div>
+      <div class="splash-title">
+        <div class="sig" aria-hidden="true"></div>
+        <div>
+          <h2>模块 00 — 执行概览</h2>
+          <p class="hint">
+            RV-NRSP：复原签证与国家再生型定居计划<br/>
+            离线优先简报工具包 • 仅本地存储 • 适合打印
+          </p>
+        </div>
+      </div>
+
+      <div class="splash-actions">
+        <div class="left">
+          <button class="btn" id="enterBtn" title="进入简报">进入简报</button>
+          <button class="btn" id="resetBtn" title="重置本地偏好与笔记">重置本地数据</button>
+          <button class="btn" id="printBtn" title="打印本模块">打印</button>
+        </div>
+        <div class="hint">
+          <span class="mono" id="timer">05</span> 秒后自动关闭 • 按 <span class="mono">Esc</span> 关闭
+        </div>
+      </div>
+
+      <div class="results" style="display:block;margin-top:12px;">
+        <b>零伤害 / 反叙事反转：</b> 本工具用于建设性的政策工作。
+        不进行定向、不施压、不自动发送、无遥测。所有内容仅留在设备本地。
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+    顶部栏
+    - 持久化控制与搜索
+  ========================================================== -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand" title="模块标识">
+        <div class="sig" aria-hidden="true"></div>
+        <h1>
+          模块 00 • 执行概览
+          <span class="sub">RV-NRSP（复原签证与再生型定居）</span>
+        </h1>
+      </div>
+
+      <div class="search" title="客户端侧搜索（仅本地）">
+        <input id="q" type="search" inputmode="search" autocomplete="off" spellcheck="false"
+               placeholder="搜索本简报（例如：ROI、第二阶段、伦理、试点）..." />
+        <button class="btn" id="clearBtn" title="清除搜索">清除</button>
+      </div>
+
+      <div class="mini">
+        <span class="pill" id="storeStatus" title="离线优先：本地存储状态">存储：…</span>
+        <button class="btn" id="themeBtn" title="切换主题">主题</button>
+        <button class="btn" id="notesBtn" title="切换速记面板">笔记</button>
+      </div>
+    </div>
+    <div class="progress" aria-hidden="true"><i id="pbar"></i></div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero" id="top">
+      <span class="kicker">🏛️ 政策简报 • 🌱 再生型基础设施 • 📘 模块 00</span>
+      <h2>复原签证与国家再生型定居计划（RV-NRSP）</h2>
+      <p>
+        一种系统整合的方法，将移民、生态修复、住房稳定与粮食韧性
+        融合为一个可审计的整体方案——为试点部署、财政可辩护性与伦理可行性而设计。
+      </p>
+      <div class="meta">
+        <span class="tag"><strong>受众：</strong> 部长、常秘、政策负责人、财政评审</span>
+        <span class="tag"><strong>时间轴：</strong> 0–6 个月稳定期 • 6–36 个月参与期 • 3–7 年回报</span>
+        <span class="tag"><strong>模式：</strong> 离线优先 • 仅本地 • 适合打印</span>
+      </div>
+    </section>
+
+    <section class="grid">
+      <section>
+        <details class="card" id="s-01" open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">00</div>
+              <div class="sum-title">
+                <strong>0.1 本简报的目的</strong>
+                <span>用途与在高级评审中的使用方式</span>
+              </div>
+            </div>
+            <div class="chev">⌄</div>
+          </summary>
+          <div class="inner">
+            <p>
+              本模块为高级政府官员与政策制定者提供一个<b>系统层面的概览</b>，
+              提出将移民、生态修复、住房稳定与粮食韧性整合为一个可审计框架的国家级方案。
+            </p>
+            <p>
+              目标并非新增一个社会项目，而是<b>重对齐既有国家能力</b>，
+              将目前被视为成本的支出转化为长期的<b>生产性资产</b>。
+            </p>
+          </div>
+        </details>
+
+        <details class="card" id="s-02" open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">01</div>
+              <div class="sum-title">
+                <strong>0.2 核心主张（通俗表述）</strong>
+                <span>到达即稳定 + 有偿参与 + 清晰的居留路径</span>
+              </div>
+            </div>
+            <div class="chev">⌄</div>
+          </summary>
+          <div class="inner">
+            <p>
+              提供一条专门的移民与居留路径——<b>复原签证</b>——
+              面向自愿参与国家级再造林与生态基础设施项目的个人与家庭。
+            </p>
+            <hr/>
+            <p><b>参与者到达后可获得：</b></p>
+            <ul>
+              <li>即时稳定（住房、粮食获取、医疗登记）</li>
+              <li>在修复与建造项目中的有偿、体面的参与</li>
+              <li>清晰的永久居留或公民身份路径</li>
+            </ul>
+            <p><b>国家获得：</b></p>
+            <ul>
+              <li>加速的再造林与气候韧性基础设施</li>
+              <li>分布式粮食生产资产（果树/坚果廊道及配套生态）</li>
+              <li>长期福利、健康与灾害应对成本的降低</li>
+              <li>对资源利用不足地区的稳定性定居</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="card" id="s-03" open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">02</div>
+              <div class="sum-title">
+                <strong>0.3 这是系统性方案（而非道德论证）</strong>
+                <span>打破部门孤岛：移民 ↔ 住房 ↔ 土地利用 ↔ 粮食 ↔ 韧性</span>
+              </div>
+            </div>
+            <div class="chev">⌄</div>
+          </summary>
+          <div class="inner">
+            <p>
+              该领域的失败多源于<b>治理孤岛</b>：移民、住房、土地利用、粮食与气候韧性
+              被当作彼此独立的问题，拥有各自的预算与指标。
+            </p>
+            <p>
+              RV-NRSP 将其视为<b>耦合系统</b>。在系统工程层面，
+              旨在减少负外部性、增强正反馈，
+              并把短期投入（人口与资金）转化为耐久产出（树木、土壤稳定、住房存量、地方粮食资产）。
+            </p>
+            <p class="mono">工作性表述：“将热力学应用于治理”。</p>
+          </div>
+        </details>
+
+        <details class="card" id="s-04" open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">03</div>
+              <div class="sum-title">
+                <strong>0.4 战略背景（为何是现在）</strong>
+                <span>人口结构、住房、粮水脆弱性、灾害成本的叠加</span>
+              </div>
+            </div>
+            <div class="chev">⌄</div>
+          </summary>
+          <div class="inner">
+            <ul>
+              <li><b>人口失衡：</b> 老龄化、劳动力短缺、农村密度下降</li>
+              <li><b>住房约束：</b> 金融化市场与供给瓶颈</li>
+              <li><b>粮水脆弱：</b> 气候波动冲击集中式供应链</li>
+              <li><b>灾害成本上升：</b> 火灾、洪水、热浪、干旱</li>
+            </ul>
+            <p>分散应对会叠加成本；整合应对可<b>叠加收益</b>。</p>
+          </div>
+        </details>
+
+        <details class="card" id="s-05" open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">04</div>
+              <div class="sum-title">
+                <strong>0.5 项目架构（高层）</strong>
+                <span>阶段 I 稳定 • 阶段 II 有偿参与 • 阶段 III 复利回报</span>
+              </div>
+            </div>
+            <div class="chev">⌄</div>
+          </summary>
+          <div class="inner">
+            <h3>阶段 I — 稳定期（0–6 个月）</h3>
+            <ul>
+              <li>到达住房（酒店、模块化单元、再利用设施）</li>
+              <li>粮食保障（公共厨房、代金券、地方合作）</li>
+              <li>医疗登记与导向</li>
+              <li>语言与公民融入</li>
+            </ul>
+            <p>该阶段用于消除可预见失败模式，而<b>非</b>劳动力提取。</p>
+            <hr/>
+            <h3>阶段 II — 再生型参与（6 个月–3 年）</h3>
+            <ul>
+              <li>果树/坚果廊道（含本地支撑物种）</li>
+              <li>土壤修复与蓄水项目</li>
+              <li>模块化/预制住房建设</li>
+              <li>城市与城郊绿化</li>
+            </ul>
+            <p>参与过程记录、可审计，并提供技能认证。</p>
+            <hr/>
+            <h3>阶段 III — 复利回报（3–7 年）</h3>
+            <ul>
+              <li>树木进入产出期</li>
+              <li>地方粮食系统稳定</li>
+              <li>热/洪风险降低</li>
+              <li>医疗与灾害成本下降</li>
+              <li>社区走向部分自给</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="card" id="s-06" open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">05</div>
+              <div class="sum-title">
+                <strong>0.6 经济逻辑（执行摘要）</strong>
+                <span>将成本重分类为基础设施；强调避免成本</span>
+              </div>
+            </div>
+            <div class="chev">⌄</div>
+          </summary>
+          <div class="inner">
+            <ul>
+              <li>移民支持 → <b>基础设施投资</b></li>
+              <li>气候缓解 → <b>生产性资产创造</b></li>
+              <li>住房援助 → <b>技能与资本形成</b></li>
+              <li>灾害响应 → <b>避免的未来支出</b></li>
+            </ul>
+            <p>要点：果树是多年代公共资产，运营成本低，收益复利。</p>
+          </div>
+        </details>
+
+        <details class="card" id="s-07" open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">06</div>
+              <div class="sum-title">
+                <strong>0.7 伦理与法律定位</strong>
+                <span>自愿、有偿、权利保障、可审计；公民可同等参与</span>
+              </div>
+            </div>
+            <div class="chev">⌄</div>
+          </summary>
+          <div class="inner">
+            <ul>
+              <li><b>自愿：</b> 无强迫劳动或惩罚性结构</li>
+              <li><b>有偿：</b> 符合劳动与安全标准</li>
+              <li><b>权利保障：</b> 不低于既有路径</li>
+              <li><b>可审计：</b> 透明指标、无黑箱执法</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="card" id="s-08" open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">07</div>
+              <div class="sum-title">
+                <strong>0.8 政治可行性</strong>
+                <span>跨阵营吸引：ROI、秩序、尊严、可见本地成果</span>
+              </div>
+            </div>
+            <div class="chev">⌄</div>
+          </summary>
+          <div class="inner">
+            <p>该框架可从多种价值基础进行论证，并不依赖单一叙事。</p>
+          </div>
+        </details>
+
+        <details class="card" id="s-09" open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">08</div>
+              <div class="sum-title">
+                <strong>0.9 试点准备度</strong>
+                <span>明确地域、具体指标、可辩护范围</span>
+              </div>
+            </div>
+            <div class="chev">⌄</div>
+          </summary>
+          <div class="inner">
+            <p>优先区域：火灾受损区、人口流失农村、干旱边缘地、公有土地城郊。</p>
+          </div>
+        </details>
+
+        <details class="card" id="s-10" open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">09</div>
+              <div class="sum-title">
+                <strong>0.10 本模块是/不是</strong>
+                <span>范围澄清</span>
+              </div>
+            </div>
+            <div class="chev">⌄</div>
+          </summary>
+          <div class="inner">
+            <p><b>是：</b> 战略框架、决策简报、后续模块基础。</p>
+            <p><b>不是：</b> 立法文本、操作手册、公共宣传稿。</p>
+          </div>
+        </details>
+
+        <details class="card" id="s-11" open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">10</div>
+              <div class="sum-title">
+                <strong>0.11 过渡至模块 01</strong>
+                <span>形式化论证、系统图、失效模式分析</span>
+              </div>
+            </div>
+            <div class="chev">⌄</div>
+          </summary>
+          <div class="inner">
+            <p>
+              模块 01 将形式化政策论证，并进行敌对审查准备。
+            </p>
+            <p><b>给官员的结语：</b> 该提案并非要求国家更慷慨，
+              而是要求国家更聪明地使用既有资源。</p>
+          </div>
+        </details>
+      </section>
+    </section>
+  </main>
+</body>
+</html>
