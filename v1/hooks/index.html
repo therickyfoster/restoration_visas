@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Module 03 — Economic Modeling & Treasury Hooks (RV-NRSP) • Foster + Navi</title>
+
+  <!--
+    Zero-Harm & Anti-Inversion Note (Visible + Comment):
+    This page supports fiscal analysis, public-interest governance, and consent-forward policy design.
+    It does NOT encourage coercion, exploitation, targeting, destabilization, harassment, or threats.
+    No telemetry. No auto-send. Everything is stored locally (IndexedDB), user-controlled, and resettable.
+    Inputs are sanitized and gently rate-limited to reduce abuse. Use for understanding and constructive policy work.
+  -->
+
+  <style>
+    /* =========================================================
+      TOOLTIP: Design Tokens
+      - What: Global CSS variables for theme, spacing, typography, radii, shadows
+      - How: Edit :root to re-theme quickly; the whole UI inherits
+      - Outcome: Consistent look across modules + easy future expansion
+    ========================================================== */
+    :root{
+      --bg0:#060815;
+      --bg1:#0b1020;
+      --card:#0f1833;
+      --card2:#101b3b;
+      --ink:#e9eeff;
+      --muted:#b8c1ff;
+      --dim:#8ea0ff;
+      --accent:#7cf7d4;
+      --accent2:#7aa7ff;
+      --warn:#ffd38a;
+      --bad:#ff7aa2;
+      --ok:#8bffb2;
+
+      --ring: 0 0 0 2px rgba(124,247,212,.22), 0 0 0 6px rgba(122,167,255,.12);
+      --shadow: 0 14px 38px rgba(0,0,0,.36);
+      --shadow2: 0 8px 24px rgba(0,0,0,.28);
+
+      --r-xl: 22px;
+      --r-lg: 16px;
+      --r-md: 12px;
+
+      --pad: 18px;
+      --pad2: 14px;
+      --max: 1120px;
+
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 700px at 18% -10%, rgba(122,167,255,.22), transparent 55%),
+        radial-gradient(900px 700px at 90% 0%, rgba(124,247,212,.14), transparent 60%),
+        radial-gradient(1100px 900px at 60% 110%, rgba(255,211,138,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x:hidden;
+    }
+
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding: 76px 16px 28px;}
+
+    /* =========================================================
+      TOOLTIP: Sticky Top Bar + Navigation
+      - What: Always-on controls for search, theme, progress, and quick navigation
+      - How: Add new links into <nav> list; ensure each section has an id
+      - Outcome: Briefings stay usable even when long
+    ========================================================== */
+    .topbar{
+      position:fixed; inset:0 0 auto 0;
+      z-index:50;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(11,16,32,.92), rgba(11,16,32,.72));
+      border-bottom: 1px solid rgba(184,193,255,.12);
+    }
+    .topbar-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding: 10px 14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      min-width: 240px;
+    }
+    .sig{
+      width:34px; height:34px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 30% 30%, rgba(124,247,212,.95), rgba(122,167,255,.55) 60%, rgba(255,211,138,.25) 100%);
+      box-shadow: var(--shadow2);
+      position:relative;
+      overflow:hidden;
+    }
+    .sig:after{
+      content:"";
+      position:absolute; inset:-40%;
+      background: conic-gradient(from 90deg, rgba(255,255,255,.20), transparent 25%, rgba(255,255,255,.10), transparent 60%, rgba(255,255,255,.18));
+      animation: spin 10s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .brand h1{
+      margin:0;
+      font-size: 13px;
+      line-height:1.15;
+      letter-spacing:.2px;
+    }
+    .brand .sub{
+      display:block;
+      font-size: 11px;
+      color: var(--muted);
+      opacity:.9;
+      margin-top:2px;
+    }
+
+    .search{
+      flex:1;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      min-width: 180px;
+    }
+    .search input{
+      width:100%;
+      border-radius: 14px;
+      border: 1px solid rgba(184,193,255,.16);
+      background: rgba(15,24,51,.55);
+      color: var(--ink);
+      padding: 10px 12px;
+      outline:none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+    }
+    .search input:focus{ box-shadow: var(--ring); border-color: rgba(124,247,212,.28); }
+    .btn{
+      border:1px solid rgba(184,193,255,.16);
+      background: rgba(15,24,51,.55);
+      color:var(--ink);
+      border-radius: 14px;
+      padding: 9px 10px;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .08s ease, border-color .15s ease, background .15s ease;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+      white-space:nowrap;
+    }
+    .btn:hover{ border-color: rgba(124,247,212,.28); background: rgba(16,27,59,.68); }
+    .btn:active{ transform: translateY(1px); }
+
+    .mini{
+      display:flex; gap:8px; align-items:center;
+    }
+    .pill{
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      border: 1px solid rgba(184,193,255,.14);
+      border-radius: 999px;
+      padding: 7px 10px;
+      background: rgba(15,24,51,.45);
+    }
+
+    .progress{
+      height: 2px;
+      background: rgba(122,167,255,.22);
+      position:relative;
+      overflow:hidden;
+    }
+    .progress > i{
+      display:block; height:100%;
+      width: 0%;
+      background: linear-gradient(90deg, rgba(124,247,212,.9), rgba(122,167,255,.9));
+      box-shadow: 0 0 18px rgba(124,247,212,.28);
+    }
+
+    /* =========================================================
+      TOOLTIP: Hero + Parallax Backdrop
+      - What: Large title section with subtle parallax layers
+      - How: Add more .layer elements; JS updates translate values on scroll/mouse
+      - Outcome: Long-form feels alive without heavy dependencies
+    ========================================================== */
+    .hero{
+      position:relative;
+      border-radius: var(--r-xl);
+      background: linear-gradient(180deg, rgba(15,24,51,.75), rgba(16,27,59,.55));
+      border: 1px solid rgba(184,193,255,.14);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+    .hero .kicker{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      border: 1px solid rgba(184,193,255,.14);
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: rgba(6,8,21,.25);
+    }
+    .hero h2{
+      margin: 12px 0 8px;
+      font-size: 28px;
+      letter-spacing: .2px;
+      line-height:1.15;
+    }
+    .hero p{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 90ch;
+    }
+    .hero .meta{
+      margin-top: 14px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+    .tag{
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12px;
+      border: 1px solid rgba(184,193,255,.14);
+      background: rgba(6,8,21,.22);
+      color: var(--muted);
+    }
+    .tag strong{ color: var(--ink); font-weight: 650; }
+
+    .layers{
+      position:absolute; inset:-40px;
+      pointer-events:none;
+      opacity:.9;
+    }
+    .layer{
+      position:absolute; inset:0;
+      background-repeat:no-repeat;
+      transform: translate3d(0,0,0);
+      will-change: transform;
+    }
+    .layer.stars{
+      background-image:
+        radial-gradient(2px 2px at 10% 20%, rgba(255,255,255,.18), transparent 60%),
+        radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,.16), transparent 60%),
+        radial-gradient(2px 2px at 80% 30%, rgba(255,255,255,.14), transparent 60%),
+        radial-gradient(1px 1px at 70% 85%, rgba(255,255,255,.12), transparent 60%),
+        radial-gradient(1px 1px at 20% 90%, rgba(255,255,255,.10), transparent 60%);
+      opacity:.7;
+    }
+    .layer.glow{
+      background-image:
+        radial-gradient(700px 340px at 20% 10%, rgba(122,167,255,.20), transparent 60%),
+        radial-gradient(520px 360px at 85% 18%, rgba(124,247,212,.16), transparent 58%),
+        radial-gradient(700px 460px at 50% 100%, rgba(255,211,138,.10), transparent 55%);
+      opacity: .95;
+      filter: blur(0.2px);
+    }
+    .layer.grid{
+      background-image:
+        linear-gradient(rgba(184,193,255,.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(184,193,255,.08) 1px, transparent 1px);
+      background-size: 64px 64px;
+      opacity:.18;
+      mask-image: radial-gradient(60% 50% at 30% 30%, black, transparent 75%);
+    }
+
+    /* =========================================================
+      TOOLTIP: Layout Cards + Collapsible Sections
+      - What: Content is chunked into <details> blocks with summaries
+      - How: Add sections as <details class="card">; include a summary title
+      - Outcome: Fast skimming for officials; depth for analysts
+    ========================================================== */
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      align-items:start;
+    }
+    @media (min-width: 980px){
+      .grid{ grid-template-columns: 1.25fr .75fr; }
+      nav{ display:block; }
+    }
+
+    .card{
+      border-radius: var(--r-xl);
+      background: linear-gradient(180deg, rgba(15,24,51,.72), rgba(16,27,59,.52));
+      border: 1px solid rgba(184,193,255,.14);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+    }
+    .card .inner{ padding: var(--pad); }
+    .card h3{ margin:0 0 10px; font-size: 16px; letter-spacing:.2px; }
+    .card p, .card li{ color: var(--muted); line-height:1.7; }
+    .card ul{ margin: 10px 0 0 18px; }
+
+    details.card{ padding:0; }
+    details.card summary{
+      list-style:none;
+      cursor:pointer;
+      padding: 14px var(--pad);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      user-select:none;
+    }
+    details.card summary::-webkit-details-marker{ display:none; }
+    .sum-left{ display:flex; gap: 10px; align-items:flex-start; min-width:0; }
+    .badge{
+      flex:0 0 auto;
+      width: 30px; height: 30px;
+      border-radius: 12px;
+      background: rgba(124,247,212,.14);
+      border:1px solid rgba(124,247,212,.20);
+      display:grid;
+      place-items:center;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--ink);
+    }
+    .sum-title{ min-width:0; }
+    .sum-title strong{
+      display:block;
+      font-size: 14px;
+      letter-spacing:.2px;
+      line-height:1.25;
+    }
+    .sum-title span{
+      display:block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+      line-height:1.25;
+    }
+    .chev{
+      flex:0 0 auto;
+      width: 34px; height: 34px;
+      border-radius: 14px;
+      border:1px solid rgba(184,193,255,.14);
+      display:grid;
+      place-items:center;
+      background: rgba(6,8,21,.18);
+      transition: transform .18s ease;
+    }
+    details[open] summary .chev{ transform: rotate(180deg); }
+    details.card .inner{ padding: 0 var(--pad) var(--pad); }
+    details.card summary:hover{ background: rgba(6,8,21,.14); }
+
+    /* =========================================================
+      TOOLTIP: Right Rail (TOC + HUD + Visuals)
+      - What: A compact “control tower” with navigation + local modeling widgets
+      - How: Add anchors for new sections; widgets read and store local settings
+      - Outcome: Speeds review and supports quick “what-if” checks
+    ========================================================== */
+    .rail{
+      position: sticky;
+      top: 74px;
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+    }
+    .toc, .hud, .viz{
+      border-radius: var(--r-xl);
+      background: linear-gradient(180deg, rgba(15,24,51,.70), rgba(16,27,59,.50));
+      border: 1px solid rgba(184,193,255,.14);
+      box-shadow: var(--shadow2);
+      padding: 12px;
+    }
+    .toc h4, .hud h4, .viz h4{ margin: 4px 8px 10px; font-size: 12px; color: var(--muted); letter-spacing:.2px; }
+    .toc a{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 9px 10px;
+      border-radius: 14px;
+      text-decoration:none;
+      color: var(--muted);
+      border: 1px solid transparent;
+    }
+    .toc a:hover{
+      border-color: rgba(124,247,212,.22);
+      background: rgba(6,8,21,.14);
+      color: var(--ink);
+    }
+    .toc a .dot{
+      width:8px; height:8px; border-radius: 50%;
+      background: rgba(184,193,255,.30);
+      box-shadow: 0 0 0 2px rgba(184,193,255,.10);
+      flex:0 0 auto;
+    }
+    .toc a.active{
+      border-color: rgba(124,247,212,.30);
+      background: rgba(124,247,212,.08);
+      color: var(--ink);
+    }
+    .toc a.active .dot{ background: rgba(124,247,212,.75); box-shadow: 0 0 0 2px rgba(124,247,212,.18); }
+
+    .hud .row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding: 8px 8px;
+      border-radius: 14px;
+      border: 1px solid rgba(184,193,255,.10);
+      background: rgba(6,8,21,.14);
+      margin-bottom: 8px;
+    }
+    .hud .row:last-child{ margin-bottom:0; }
+    .kpi{
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.2;
+      flex:1;
+    }
+    .kpi strong{
+      display:block;
+      font-size: 13px;
+      color: var(--ink);
+      margin-bottom:2px;
+    }
+    .meter{
+      width: 84px;
+      height: 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(184,193,255,.14);
+      overflow:hidden;
+      background: rgba(15,24,51,.45);
+      flex:0 0 auto;
+    }
+    .meter > i{
+      display:block; height:100%;
+      width: 0%;
+      background: linear-gradient(90deg, rgba(124,247,212,.9), rgba(122,167,255,.9));
+    }
+
+    .field{
+      display:grid;
+      gap:8px;
+      margin: 8px;
+    }
+    .field label{
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .field input, .field select{
+      width:100%;
+      border-radius: 14px;
+      border: 1px solid rgba(184,193,255,.16);
+      background: rgba(15,24,51,.55);
+      color: var(--ink);
+      padding: 10px 12px;
+      outline:none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+    }
+    .field input:focus, .field select:focus{ box-shadow: var(--ring); border-color: rgba(124,247,212,.28); }
+
+    .mini-note{
+      margin: 10px 8px 2px;
+      color: var(--dim);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    canvas{ display:block; width:100%; height: 180px; border-radius: 16px; border:1px solid rgba(184,193,255,.10); background: rgba(6,8,21,.18); }
+
+    /* =========================================================
+      TOOLTIP: Search Highlighting + Results
+      - What: Client-side search through briefing text, with highlights
+      - How: Update data-searchable attributes on new sections
+      - Outcome: Fast retrieval during meetings
+    ========================================================== */
+    mark{
+      background: rgba(255,211,138,.22);
+      color: var(--ink);
+      padding: 0 .12em;
+      border-radius: .28em;
+      box-shadow: inset 0 0 0 1px rgba(255,211,138,.18);
+    }
+    .results{
+      display:none;
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: var(--r-lg);
+      border: 1px solid rgba(184,193,255,.14);
+      background: rgba(6,8,21,.16);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .results b{ color: var(--ink); }
+
+    /* =========================================================
+      TOOLTIP: Footer + Print Styles
+      - What: Visible zero-harm note, attributions, and print-friendly output
+      - How: Expand the attributions list as you adapt patterns
+      - Outcome: Safe sharing; predictable printing
+    ========================================================== */
+    footer{
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: var(--r-xl);
+      border: 1px solid rgba(184,193,255,.14);
+      background: rgba(6,8,21,.16);
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    footer h4{ margin: 0 0 8px; font-size: 13px; color: var(--ink); }
+    .footgrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 860px){
+      .footgrid{ grid-template-columns: 1fr 1fr; }
+    }
+    .small{ font-size: 12px; }
+    .mono{ font-family: var(--mono); }
+    .danger, .ok{
+      display:inline-flex; gap:8px; align-items:center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(184,193,255,.14);
+      background: rgba(6,8,21,.14);
+      margin-top: 8px;
+    }
+    .danger{ color: var(--warn); }
+    .ok{ color: var(--ok); }
+
+    /* Splash */
+    .splash{
+      position:fixed; inset:0;
+      z-index:80;
+      display:grid;
+      place-items:center;
+      background:
+        radial-gradient(900px 600px at 20% 20%, rgba(122,167,255,.22), transparent 60%),
+        radial-gradient(800px 540px at 80% 10%, rgba(124,247,212,.16), transparent 60%),
+        linear-gradient(180deg, rgba(6,8,21,.96), rgba(11,16,32,.96));
+      transition: opacity .35s ease, transform .35s ease;
+    }
+    .splash[hidden]{ display:none; }
+    .splash.fade{ opacity:0; transform: translateY(-6px); pointer-events:none; }
+    .splash-card{
+      width: min(760px, calc(100% - 28px));
+      border-radius: 26px;
+      border: 1px solid rgba(184,193,255,.16);
+      background: linear-gradient(180deg, rgba(15,24,51,.72), rgba(16,27,59,.54));
+      box-shadow: var(--shadow);
+      padding: 18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .splash-x{
+      position:absolute;
+      top: 12px; right: 12px;
+      width: 38px; height: 38px;
+      border-radius: 16px;
+      border: 1px solid rgba(184,193,255,.14);
+      background: rgba(6,8,21,.20);
+      color: var(--ink);
+      cursor:pointer;
+      font-size: 18px;
+      line-height: 38px;
+      text-align:center;
+      user-select:none;
+    }
+    .splash-x:hover{ border-color: rgba(124,247,212,.28); background: rgba(16,27,59,.64); }
+    .splash-title{
+      display:flex; align-items:center; gap:12px;
+    }
+    .splash-title h2{
+      margin:0;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+    .splash-title p{
+      margin: 6px 0 0;
+      color: var(--muted);
+      line-height:1.6;
+    }
+    .splash-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top: 12px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .splash-actions .left{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+    }
+    .hint{
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    /* Toast */
+    .toast{
+      position: fixed;
+      inset: auto 12px 12px auto;
+      z-index: 70;
+      min-width: 220px;
+      max-width: 360px;
+      border-radius: 18px;
+      border: 1px solid rgba(184,193,255,.14);
+      background: rgba(6,8,21,.78);
+      box-shadow: var(--shadow2);
+      padding: 10px 12px;
+      color: var(--muted);
+      transform: translateY(10px);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .2s ease, transform .2s ease;
+    }
+    .toast.show{ opacity:1; transform: translateY(0); }
+    .toast b{ color: var(--ink); }
+
+    /* Print */
+    @media print{
+      .topbar,.splash,.toast,.rail{ display:none !important; }
+      body{ background:#fff; color:#111; }
+      .hero,.card,footer{ box-shadow:none; background:#fff; border:1px solid #ddd; }
+      .wrap{ padding-top: 10px; max-width: 100%; }
+      a{ text-decoration: none; }
+      mark{ background: #ffefc6; color:#111; box-shadow:none; }
+    }
+
+    /* Reduced Motion */
+    @media (prefers-reduced-motion: reduce){
+      *{ animation: none !important; transition: none !important; scroll-behavior:auto !important; }
+      .layer{ transform:none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- =========================================================
+    TOOLTIP: Splash Screen
+    - What: Animated entry overlay with finance-focused intent note + local-only storage notice
+    - How: Edit the copy inside .splash-card; change the auto-close timer in JS
+    - Outcome: Reviewers understand purpose and limits immediately
+  ========================================================== -->
+  <section id="splash" class="splash" aria-label="Intro splash">
+    <div class="splash-card">
+      <div class="splash-x" id="splashClose" title="Close (Esc)">×</div>
+      <div class="splash-title">
+        <div class="sig" aria-hidden="true"></div>
+        <div>
+          <h2>Module 03 — Economic Modeling & Treasury Hooks</h2>
+          <p class="hint">
+            RV-NRSP fiscal defensibility pack: assumptions → cost curves → avoided costs → pilot envelopes<br/>
+            Offline-first briefing kit • local-only storage • print-ready
+          </p>
+        </div>
+      </div>
+
+      <div class="splash-actions">
+        <div class="left">
+          <button class="btn" id="enterBtn" title="Enter the briefing">Enter Briefing</button>
+          <button class="btn" id="resetBtn" title="Reset local preferences and notes">Reset Local Data</button>
+          <button class="btn" id="printBtn" title="Print this module">Print</button>
+        </div>
+        <div class="hint">
+          Auto-closes in <span class="mono" id="timer">05</span>s • Press <span class="mono">Esc</span> to close
+        </div>
+      </div>
+
+      <div class="results" style="display:block;margin-top:12px;">
+        <b>Scope:</b> This module supports treasury review using transparent assumptions and local-only “what-if” sliders.
+        <b>No</b> surveillance, coercion, or data export by default. All output is user-controlled.
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+    TOOLTIP: Top Bar
+    - What: Persistent controls + search
+    - How: Wire new buttons in JS; keep input sanitized
+    - Outcome: Faster navigation in real meetings
+  ========================================================== -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand" title="Module identity">
+        <div class="sig" aria-hidden="true"></div>
+        <h1>
+          Module 03 • Economic Modeling & Treasury Hooks
+          <span class="sub">RV-NRSP (Restoration Visas & Regenerative Settlement)</span>
+        </h1>
+      </div>
+
+      <div class="search" title="Client-side search (local-only)">
+        <input id="q" type="search" inputmode="search" autocomplete="off" spellcheck="false"
+               placeholder="Search (e.g., avoided cost, CAPEX, OPEX, sensitivity, pilot budget)..." />
+        <button class="btn" id="clearBtn" title="Clear search">Clear</button>
+      </div>
+
+      <div class="mini">
+        <span class="pill" id="storeStatus" title="Offline-first: local storage status">Storage: …</span>
+        <button class="btn" id="themeBtn" title="Toggle theme">Theme</button>
+        <button class="btn" id="notesBtn" title="Toggle quick notes panel">Notes</button>
+      </div>
+    </div>
+    <div class="progress" aria-hidden="true"><i id="pbar"></i></div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero" id="top">
+      <div class="layers" aria-hidden="true">
+        <div class="layer glow" id="layerGlow"></div>
+        <div class="layer grid" id="layerGrid"></div>
+        <div class="layer stars" id="layerStars"></div>
+      </div>
+
+      <span class="kicker">💼 Treasury Review • 📈 Cost Curves • 🧾 Avoided Expenditure • 📘 Module 03</span>
+      <h2>Economic Modeling & Fiscal Defensibility</h2>
+      <p>
+        This module provides a finance-ministry-friendly logic chain for RV-NRSP: (1) cost taxonomy, (2) asset/service-life framing,
+        (3) avoided-expenditure pathways, (4) pilot budget envelopes, and (5) sensitivity analysis for hostile review.
+      </p>
+
+      <div class="meta">
+        <span class="tag"><strong>Primary lens:</strong> CAPEX/OPEX + avoided costs + asset service life</span>
+        <span class="tag"><strong>Outputs:</strong> pilot envelopes, assumptions register, sensitivity bands</span>
+        <span class="tag"><strong>Mode:</strong> offline-first • local-only • print-ready</span>
+      </div>
+
+      <div class="results" id="results" aria-live="polite"></div>
+    </section>
+
+    <section class="grid">
+      <section>
+        <!-- =========================================================
+          TOOLTIP: Content Sections (Details Cards)
+          - What: Each section is independently collapsible and searchable
+          - How: Add id + data-searchable; keep summaries short, outcomes clear
+          - Outcome: Decision-makers can skim; analysts can dive
+        ========================================================== -->
+
+        <details class="card" id="s-01" data-searchable open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">03</div>
+              <div class="sum-title">
+                <strong>3.1 Treasury Framing: What “Counts” as a Return</strong>
+                <span>Why avoided costs and durable assets must be explicit, not implied</span>
+              </div>
+            </div>
+            <div class="chev" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="inner">
+            <p>
+              Standard budget review privileges <b>direct revenues</b> and undercounts <b>costs not incurred</b>. RV-NRSP can be fiscally sound and still fail
+              treasury review unless the return channels are written in treasury-native language:
+              <b>asset service life</b>, <b>depreciation/maintenance</b>, and <b>avoided-expenditure pathways</b>.
+            </p>
+            <ul>
+              <li><b>Durable assets:</b> productive tree stock, stabilized housing units, restored land area, trained labor capacity</li>
+              <li><b>Service flows:</b> food yield, heat mitigation, flood attenuation, reduced acute care burden, reduced disaster response</li>
+              <li><b>Avoided costs:</b> emergency shelter spikes, wildfire/flood recovery, heat morbidity, long-term social service dependency</li>
+            </ul>
+            <p class="mono">
+              Treasury hook: “Front-loaded stabilization CAPEX/OPEX; back-loaded savings and service flows over a multi-decade asset life.”
+            </p>
+          </div>
+        </details>
+
+        <details class="card" id="s-02" data-searchable open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">A</div>
+              <div class="sum-title">
+                <strong>3.2 Cost Taxonomy (CAPEX / OPEX / Transfer)</strong>
+                <span>Make costs legible: what is built vs operated vs transferred</span>
+              </div>
+            </div>
+            <div class="chev" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="inner">
+            <p>
+              A defensible model begins with a clean taxonomy. RV-NRSP costs should be separated into:
+            </p>
+            <ul>
+              <li><b>CAPEX (capital):</b> modular housing, tool libraries, nurseries, water retention works, training infrastructure</li>
+              <li><b>OPEX (operating):</b> staffing, logistics, maintenance, monitoring, program administration, healthcare onboarding overhead</li>
+              <li><b>Transfers:</b> temporary food access supports, stipends during training ramp, targeted vouchers (time-bounded)</li>
+            </ul>
+            <p>
+              This separation prevents category errors during review (e.g., treating one-time capital build as recurring burn).
+            </p>
+            <p class="mono">
+              Audit note: every line item maps to a stock or flow in Module 02.
+            </p>
+          </div>
+        </details>
+
+        <details class="card" id="s-03" data-searchable open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">B</div>
+              <div class="sum-title">
+                <strong>3.3 Unit Economics (Per Participant / Per Household)</strong>
+                <span>How to estimate costs without pretending to know your country’s exact numbers</span>
+              </div>
+            </div>
+            <div class="inner">
+              <p>
+                The correct approach for early-stage treasury discussions is <b>unit economics</b> with sensitivity bands—not fake precision.
+                Core unit blocks:
+              </p>
+              <ul>
+                <li><b>Stabilization cost per participant-month</b> (housing + food access + admin)</li>
+                <li><b>Training cost per certification</b> (instruction + materials + safety)</li>
+                <li><b>Stewardship cost per hectare-year</b> (prep, planting, monitoring, maintenance)</li>
+                <li><b>Tree stock cost per surviving tree to year N</b> (seedling + care + mortality)</li>
+              </ul>
+              <p>
+                This enables pilot sizing even when national costs vary (urban vs rural, labor market conditions, supply chain constraints).
+              </p>
+              <p class="mono">
+                Rule: model in ranges; decide with gates; refine with pilot data.
+              </p>
+            </div>
+          </details>
+
+        <details class="card" id="s-04" data-searchable open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">C</div>
+              <div class="sum-title">
+                <strong>3.4 Avoided-Expenditure Pathways</strong>
+                <span>The “money saved” story: disaster response, healthcare, shelter spikes</span>
+              </div>
+            </div>
+            <div class="inner">
+              <p>
+                RV-NRSP’s strongest fiscal case is avoided expenditure across multiple ministries. Key channels:
+              </p>
+              <ul>
+                <li><b>Emergency shelter avoidance:</b> stabilized arrivals reduce crisis accommodation usage and downstream homelessness risk</li>
+                <li><b>Disaster-response cost reduction:</b> restored land + water retention reduces fire/flood severity and recovery spend</li>
+                <li><b>Heat and air-quality health burden:</b> shade + green corridors reduce heat morbidity and cardiovascular/respiratory stress</li>
+                <li><b>Food price shock buffering:</b> distributed perennial food assets moderate volatility and improve nutrition outcomes</li>
+              </ul>
+              <p>
+                Each channel should have (1) a baseline spend estimate, (2) a plausible effect size range, and (3) a time-to-impact curve.
+              </p>
+              <p class="mono">
+                Treasury language: “expected value under uncertainty” + “conservative effect sizes” + “time-lagged benefits”.
+              </p>
+            </div>
+          </details>
+
+        <details class="card" id="s-05" data-searchable open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">D</div>
+              <div class="sum-title">
+                <strong>3.5 Asset Service Life & Depreciation</strong>
+                <span>How to defend “trees” as infrastructure without sounding poetic</span>
+              </div>
+            </div>
+            <div class="inner">
+              <p>
+                Treat productive tree corridors and restoration works as <b>infrastructure assets</b> with service life and maintenance plans.
+                This aligns with existing capital-planning frameworks.
+              </p>
+              <ul>
+                <li><b>Service life:</b> multi-decade for tree stock; shorter for modular units depending on spec</li>
+                <li><b>Maintenance:</b> early-years care dominates; later years shift to pruning, disease management, replacement planting</li>
+                <li><b>Risk provisioning:</b> mortality rates and extreme events are modeled as expected losses, not “surprises”</li>
+              </ul>
+              <p class="mono">
+                Finance note: treat mortality as depreciation; treat replacement planting as capex refresh.
+              </p>
+            </div>
+          </details>
+
+        <details class="card" id="s-06" data-searchable open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">E</div>
+              <div class="sum-title">
+                <strong>3.6 Pilot Budget Envelopes</strong>
+                <span>How to propose a pilot that survives scrutiny: gates, tranches, and stop-loss</span>
+              </div>
+            </div>
+            <div class="inner">
+              <p>
+                Treasury survivability improves when pilots are structured as <b>gated tranches</b> with explicit stop conditions.
+              </p>
+              <ul>
+                <li><b>Tranche 1 (setup):</b> governance, site selection, procurement, training cadre, baseline measurement</li>
+                <li><b>Tranche 2 (stabilize):</b> limited intake matched to verified housing capacity</li>
+                <li><b>Tranche 3 (deploy):</b> restoration tracks and shelter builds scale only after survival/retention metrics clear thresholds</li>
+              </ul>
+              <p>
+                Pilot envelope should be expressed in 3 layers:
+                (1) <b>per participant-month</b>, (2) <b>per household stabilized</b>, (3) <b>per hectare-year</b>.
+              </p>
+              <p class="mono">
+                Stop-loss examples: intake pauses if housing capacity margin falls below X%; planting pauses if survival below Y% in year 1.
+              </p>
+            </div>
+          </details>
+
+        <details class="card" id="s-07" data-searchable open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">F</div>
+              <div class="sum-title">
+                <strong>3.7 Sensitivity Analysis & Conservative Cases</strong>
+                <span>Hostile-review ready: show best/base/worst without collapsing</span>
+              </div>
+            </div>
+            <div class="inner">
+              <p>
+                A credible treasury submission includes sensitivity on the parameters that actually move results:
+              </p>
+              <ul>
+                <li><b>Tree survival:</b> early-year mortality and climate shocks</li>
+                <li><b>Housing cost variance:</b> hotel vs modular, regional supply constraints</li>
+                <li><b>Training throughput:</b> instructor scarcity and certification pace</li>
+                <li><b>Retention:</b> participant dropout or relocation patterns</li>
+                <li><b>Avoided-cost effect sizes:</b> conservative assumptions with explicit uncertainty bounds</li>
+              </ul>
+              <p>
+                Good practice: present <b>three cases</b> (conservative/base/upside) and show that even conservative cases deliver a policy-relevant return.
+              </p>
+              <p class="mono">
+                Integrity rule: use conservative effect sizes; do not “double count” benefits across ministries.
+              </p>
+            </div>
+          </details>
+
+        <details class="card" id="s-08" data-searchable open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">G</div>
+              <div class="sum-title">
+                <strong>3.8 Measurement, Audit, and Reporting</strong>
+                <span>Make the model falsifiable: what data is collected, when, and by whom</span>
+              </div>
+            </div>
+            <div class="inner">
+              <p>
+                Treasury confidence increases when models are designed to be <b>proven wrong safely</b>.
+                Pilot measurement should include:
+              </p>
+              <ul>
+                <li><b>Inputs:</b> intake, spend by category, staffing, procurement lead times</li>
+                <li><b>Outputs:</b> housing units stabilized, certifications earned, hectares under management, seedlings planted</li>
+                <li><b>Outcomes:</b> survival rates, retention, local service utilization, early indicators for health/disaster impacts</li>
+              </ul>
+              <p>
+                Reporting cadence should be predictable: monthly operational dashboard + quarterly treasury report + annual audited outcome review.
+              </p>
+              <p class="mono">
+                Governance note: publish aggregate metrics; avoid personally identifying data; keep participation consent-forward.
+              </p>
+            </div>
+          </details>
+
+        <!-- Quick Notes Panel (toggle) -->
+        <section class="card" id="notesPanel" style="display:none">
+          <div class="inner">
+            <h3>Quick Notes (Local-Only)</h3>
+            <p class="small">
+              Notes are stored on-device in IndexedDB. Nothing is transmitted. Keep sensitive info out anyway—future-proofing is classy.
+            </p>
+            <textarea id="notes" rows="8" style="width:100%;border-radius:16px;border:1px solid rgba(184,193,255,.16);background:rgba(15,24,51,.55);color:var(--ink);padding:12px;outline:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)"></textarea>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+              <button class="btn" id="saveNotes">Save Notes</button>
+              <button class="btn" id="exportNotes">Export Notes (JSON)</button>
+              <button class="btn" id="clearNotes">Clear Notes</button>
+            </div>
+            <p class="small mono" id="notesMeta" style="margin-top:10px;color:var(--dim)">—</p>
+          </div>
+        </section>
+
+        <footer>
+          <div class="footgrid">
+            <div>
+              <h4>Zero-Harm & Anti-Inversion</h4>
+              <div class="danger">🛡️ This toolkit rejects coercion, exploitation, targeting, harassment, and destabilization.</div>
+              <div class="ok">🌿 Local-only, user-controlled storage. No telemetry. No auto-send. Reset anytime.</div>
+              <p class="small" style="margin-top:10px">
+                Use fiscal tools to improve public outcomes—never to justify harm, exclusion, or forced participation.
+              </p>
+            </div>
+            <div>
+              <h4>Attributions & Licensing (Human-Readable)</h4>
+              <p class="small">
+                This page uses original code with common UI patterns (sticky header, collapsible sections, client-side search, local IndexedDB).
+                No external libraries. No proprietary code copied.
+              </p>
+              <p class="small mono">
+                Suggested repo labels: “treasury”, “economic-modeling”, “policy-toolkit”, “offline-first”
+              </p>
+              <p class="small">
+                Add your repo’s license in root (e.g., CC BY 4.0 content + MIT code) depending on deployment goals.
+              </p>
+            </div>
+          </div>
+        </footer>
+      </section>
+
+      <aside class="rail">
+        <div class="toc" aria-label="Table of contents">
+          <h4>Jump (TOC)</h4>
+          <a href="#s-01" data-jump="s-01"><span style="display:flex;gap:10px;align-items:center"><i class="dot"></i>3.1 Treasury Framing</span><span class="mono">03</span></a>
+          <a href="#s-02" data-jump="s-02"><span style="display:flex;gap:10px;align-items:center"><i class="dot"></i>3.2 Cost Taxonomy</span><span class="mono">A</span></a>
+          <a href="#s-03" data-jump="s-03"><span style="display:flex;gap:10px;align-items:center"><i class="dot"></i>3.3 Unit Economics</span><span class="mono">B</span></a>
+          <a href="#s-04" data-jump="s-04"><span style="display:flex;gap:10px;align-items:center"><i class="dot"></i>3.4 Avoided Costs</span><span class="mono">C</span></a>
+          <a href="#s-05" data-jump="s-05"><span style="display:flex;gap:10px;align-items:center"><i class="dot"></i>3.5 Asset Life</span><span class="mono">D</span></a>
+          <a href="#s-06" data-jump="s-06"><span style="display:flex;gap:10px;align-items:center"><i class="dot"></i>3.6 Pilot Envelopes</span><span class="mono">E</span></a>
+          <a href="#s-07" data-jump="s-07"><span style="display:flex;gap:10px;align-items:center"><i class="dot"></i>3.7 Sensitivity</span><span class="mono">F</span></a>
+          <a href="#s-08" data-jump="s-08"><span style="display:flex;gap:10px;align-items:center"><i class="dot"></i>3.8 Audit & Reporting</span><span class="mono">G</span></a>
+        </div>
+
+        <div class="hud" aria-label="Gamification HUD">
+          <h4>HUD (Local-Only)</h4>
+          <div class="row">
+            <div class="kpi"><strong id="kpiRead">0%</strong>Read Progress</div>
+            <div class="meter" aria-hidden="true"><i id="mRead"></i></div>
+          </div>
+          <div class="row">
+            <div class="kpi"><strong id="kpiOpen">0/0</strong>Sections Opened</div>
+            <div class="meter" aria-hidden="true"><i id="mOpen"></i></div>
+          </div>
+          <div class="row">
+            <div class="kpi"><strong id="kpiScore">0</strong>Clarity Score</div>
+            <div class="meter" aria-hidden="true"><i id="mScore"></i></div>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+            <button class="btn" id="expandAll">Expand All</button>
+            <button class="btn" id="collapseAll">Collapse All</button>
+            <button class="btn" id="topBtn">Back to Top</button>
+          </div>
+          <p class="small" style="margin:10px 6px 2px;color:var(--dim)">
+            “Clarity Score” is a local gamified nudge: search + notes saved + sections opened. Nothing leaves your device.
+          </p>
+        </div>
+
+        <div class="viz" aria-label="Local what-if model">
+          <h4>Quick What-If (Local)</h4>
+
+          <div class="field" title="Set pilot scale assumptions (local-only).">
+            <label for="people">Participants (pilot intake)</label>
+            <input id="people" type="number" min="0" step="10" value="500" />
+          </div>
+
+          <div class="field" title="Stabilization duration assumed for early phase.">
+            <label for="months">Stabilization months (Phase I)</label>
+            <input id="months" type="number" min="0" step="1" value="3" />
+          </div>
+
+          <div class="field" title="All-in stabilization cost per person-month (housing + food access + admin).">
+            <label for="cpm">Cost per person-month (stabilization)</label>
+            <input id="cpm" type="number" min="0" step="50" value="1200" />
+          </div>
+
+          <div class="field" title="Expected survival of planted productive trees through year 1 (conservative/base/upside).">
+            <label for="survival">Tree survival (year 1, %)</label>
+            <input id="survival" type="number" min="0" max="100" step="1" value="75" />
+          </div>
+
+          <div class="field" title="Avoided-cost estimate per participant-year (conservative). This is a placeholder slider to frame sensitivity, not a claim.">
+            <label for="avoided">Avoided cost per participant-year (estimate)</label>
+            <input id="avoided" type="number" min="0" step="50" value="400" />
+          </div>
+
+          <div class="field">
+            <label for="disc">Discount rate (annual, %)</label>
+            <input id="disc" type="number" min="0" max="15" step="0.25" value="3.0" />
+          </div>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap; padding:0 8px 8px;">
+            <button class="btn" id="calcBtn" title="Compute local pilot envelope">Compute</button>
+            <button class="btn" id="exportModel" title="Export local assumptions as JSON">Export JSON</button>
+          </div>
+
+          <canvas id="chart" width="480" height="180" aria-label="Mini chart (local-only)"></canvas>
+          <p class="mini-note" id="modelOut">
+            This widget is intentionally conservative and schematic. Use it to sanity-check envelopes and sensitivity—not to claim precision.
+          </p>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <noscript>
+    <div style="max-width:960px;margin:90px auto 18px;padding:14px;border:1px solid #ddd;border-radius:16px;background:#fff;color:#111">
+      <b>JavaScript is disabled.</b> This briefing still renders, but offline storage, search, HUD metrics, and the what-if tool won’t work.
+      You can still read, print, and copy the content safely.
+    </div>
+  </noscript>
+
+  <script>
+    /* =========================================================
+      TOOLTIP: Safety + Input Hygiene
+      - What: Minimal sanitization, gentle rate limiting, and no auto-send policy
+      - How: Use safeText() before injecting user-provided strings into HTML
+      - Outcome: Reduces XSS risk and abuse patterns in offline tools
+    ========================================================== */
+    (function(){
+      "use strict";
+
+      const $ = (q, el=document) => el.querySelector(q);
+      const $$ = (q, el=document) => Array.from(el.querySelectorAll(q));
+
+      const safeText = (s) => String(s ?? "").replace(/[<>&]/g, ch => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[ch]));
+      const clamp = (n,min,max)=>Math.max(min,Math.min(max,n));
+      const nowISO = ()=> new Date().toISOString();
+
+      // Gentle rate limiter (per action key)
+      const rate = new Map();
+      function allow(key, ms){
+        const t = performance.now();
+        const last = rate.get(key) || 0;
+        if (t - last < ms) return false;
+        rate.set(key, t);
+        return true;
+      }
+
+      /* =========================================================
+        TOOLTIP: IndexedDB (Local-Only State)
+        - What: Persistent storage for preferences, HUD stats, notes, and model assumptions
+        - How: Add stores by bumping DB_VERSION and creating object stores in onupgradeneeded
+        - Outcome: Offline reliability without external services
+      ========================================================== */
+      const DB_NAME = "rvnrsp_module03_db";
+      const DB_VERSION = 1;
+      const STORE = "kv";
+
+      function openDB(){
+        return new Promise((resolve, reject)=>{
+          const req = indexedDB.open(DB_NAME, DB_VERSION);
+          req.onupgradeneeded = ()=>{
+            const db = req.result;
+            if(!db.objectStoreNames.contains(STORE)){
+              db.createObjectStore(STORE, { keyPath: "k" });
+            }
+          };
+          req.onsuccess = ()=> resolve(req.result);
+          req.onerror = ()=> reject(req.error);
+        });
+      }
+      async function kvSet(k, v){
+        const db = await openDB();
+        return new Promise((resolve, reject)=>{
+          const tx = db.transaction(STORE, "readwrite");
+          tx.objectStore(STORE).put({k, v, t: nowISO()});
+          tx.oncomplete = ()=> resolve(true);
+          tx.onerror = ()=> reject(tx.error);
+        });
+      }
+      async function kvGet(k){
+        const db = await openDB();
+        return new Promise((resolve, reject)=>{
+          const tx = db.transaction(STORE, "readonly");
+          const req = tx.objectStore(STORE).get(k);
+          req.onsuccess = ()=> resolve(req.result ? req.result.v : null);
+          req.onerror = ()=> reject(req.error);
+        });
+      }
+      async function kvDel(k){
+        const db = await openDB();
+        return new Promise((resolve, reject)=>{
+          const tx = db.transaction(STORE, "readwrite");
+          tx.objectStore(STORE).delete(k);
+          tx.oncomplete = ()=> resolve(true);
+          tx.onerror = ()=> reject(tx.error);
+        });
+      }
+      async function kvClear(){
+        const db = await openDB();
+        return new Promise((resolve, reject)=>{
+          const tx = db.transaction(STORE, "readwrite");
+          tx.objectStore(STORE).clear();
+          tx.oncomplete = ()=> resolve(true);
+          tx.onerror = ()=> reject(tx.error);
+        });
+      }
+
+      const toast = $("#toast");
+      let toastTimer = null;
+      function showToast(msg){
+        toast.innerHTML = safeText(msg);
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(()=>toast.classList.remove("show"), 2200);
+      }
+
+      // Storage status
+      (async ()=>{
+        try{
+          await kvSet("sys:ping", {ok:true, t: nowISO()});
+          $("#storeStatus").textContent = "Storage: OK";
+        }catch(e){
+          $("#storeStatus").textContent = "Storage: Unavailable";
+        }
+      })();
+
+      /* =========================================================
+        TOOLTIP: Theme Toggle
+        - What: Simple light/dark toggle using data-theme
+        - How: Extend tokens for light mode if desired
+        - Outcome: Better accessibility across environments
+      ========================================================== */
+      async function applyTheme(theme){
+        document.documentElement.dataset.theme = theme;
+        if(theme === "light"){
+          document.documentElement.style.setProperty("--bg0", "#f6f7ff");
+          document.documentElement.style.setProperty("--bg1", "#eef1ff");
+          document.documentElement.style.setProperty("--card", "#ffffff");
+          document.documentElement.style.setProperty("--card2", "#ffffff");
+          document.documentElement.style.setProperty("--ink", "#101526");
+          document.documentElement.style.setProperty("--muted", "#3a4668");
+          document.documentElement.style.setProperty("--dim", "#4a5a86");
+          document.documentElement.style.setProperty("--shadow", "0 14px 38px rgba(0,0,0,.12)");
+          document.documentElement.style.setProperty("--shadow2", "0 8px 24px rgba(0,0,0,.10)");
+        } else {
+          const root = document.documentElement.style;
+          ["--bg0","--bg1","--card","--card2","--ink","--muted","--dim","--shadow","--shadow2"].forEach(v=>root.removeProperty(v));
+        }
+        await kvSet("pref:theme", theme);
+      }
+
+      /* =========================================================
+        TOOLTIP: Splash Behavior
+        - What: Auto-closes after 5 seconds + manual close + Esc
+        - How: Adjust AUTO_CLOSE_MS; call closeSplash() to hide
+        - Outcome: Smooth entry without trapping users
+      ========================================================== */
+      const splash = $("#splash");
+      const timerEl = $("#timer");
+      const AUTO_CLOSE_MS = 5000;
+
+      function closeSplash(){
+        if(!splash || splash.classList.contains("fade")) return;
+        splash.classList.add("fade");
+        setTimeout(()=>{ splash.hidden = true; }, 360);
+        kvSet("ui:splashDismissedAt", nowISO()).catch(()=>{});
+      }
+
+      function startSplashTimer(){
+        let left = 5;
+        timerEl.textContent = String(left).padStart(2,"0");
+        const t = setInterval(()=>{
+          left -= 1;
+          timerEl.textContent = String(clamp(left,0,99)).padStart(2,"0");
+          if(left <= 0) clearInterval(t);
+        }, 1000);
+        setTimeout(()=> closeSplash(), AUTO_CLOSE_MS);
+      }
+
+      $("#enterBtn").addEventListener("click", ()=> closeSplash());
+      $("#splashClose").addEventListener("click", ()=> closeSplash());
+      document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeSplash(); });
+
+      $("#printBtn").addEventListener("click", ()=>{
+        if(!allow("print", 800)) return;
+        window.print();
+      });
+
+      $("#resetBtn").addEventListener("click", async ()=>{
+        if(!allow("reset", 1200)) return;
+        await kvClear().catch(()=>{});
+        showToast("Local data reset.");
+        setTimeout(()=> location.reload(), 350);
+      });
+
+      /* =========================================================
+        TOOLTIP: Scroll Progress
+      ========================================================== */
+      const pbar = $("#pbar");
+      function updateProgress(){
+        const doc = document.documentElement;
+        const scrollTop = doc.scrollTop || document.body.scrollTop;
+        const height = doc.scrollHeight - doc.clientHeight;
+        const pct = height > 0 ? (scrollTop / height) : 0;
+        pbar.style.width = (pct*100).toFixed(1) + "%";
+        return pct;
+      }
+
+      /* =========================================================
+        TOOLTIP: Notes Panel (Local)
+      ========================================================== */
+      const notesPanel = $("#notesPanel");
+      const notesBtn = $("#notesBtn");
+      const notesArea = $("#notes");
+      const notesMeta = $("#notesMeta");
+
+      async function loadNotes(){
+        const txt = await kvGet("notes:module03") || "";
+        notesArea.value = txt;
+        const meta = await kvGet("notes:meta") || null;
+        notesMeta.textContent = meta ? ("Last saved: " + meta) : "Not saved yet.";
+      }
+      async function saveNotes(){
+        await kvSet("notes:module03", notesArea.value);
+        await kvSet("notes:meta", new Date().toLocaleString());
+        notesMeta.textContent = "Last saved: " + (await kvGet("notes:meta"));
+        bumpScore(8);
+        showToast("Notes saved (local).");
+      }
+
+      notesBtn.addEventListener("click", async ()=>{
+        if(!allow("notesToggle", 250)) return;
+        const isOpen = notesPanel.style.display !== "none";
+        notesPanel.style.display = isOpen ? "none" : "block";
+        if(!isOpen) await loadNotes();
+      });
+
+      $("#saveNotes").addEventListener("click", ()=>{
+        if(!allow("saveNotes", 400)) return;
+        saveNotes();
+      });
+
+      $("#exportNotes").addEventListener("click", async ()=>{
+        if(!allow("exportNotes", 800)) return;
+        const data = {
+          notes: notesArea.value,
+          meta: await kvGet("notes:meta"),
+          exportedAt: nowISO()
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "rvnrsp-module03-notes.json";
+        a.click();
+        URL.revokeObjectURL(a.href);
+        showToast("Notes exported.");
+      });
+
+      $("#clearNotes").addEventListener("click", async ()=>{
+        if(!allow("clearNotes", 600)) return;
+        notesArea.value = "";
+        await kvDel("notes:module03");
+        await kvDel("notes:meta");
+        notesMeta.textContent = "Cleared.";
+        showToast("Notes cleared.");
+      });
+
+      /* =========================================================
+        TOOLTIP: Search + Highlight
+      ========================================================== */
+      const q = $("#q");
+      const results = $("#results");
+
+      function clearMarks(){
+        $$("mark").forEach(m=>{
+          const t = document.createTextNode(m.textContent);
+          m.replaceWith(t);
+        });
+      }
+      function markText(node, term){
+        const text = node.nodeValue;
+        const idx = text.toLowerCase().indexOf(term);
+        if(idx === -1) return;
+        const before = document.createTextNode(text.slice(0, idx));
+        const mark = document.createElement("mark");
+        mark.textContent = text.slice(idx, idx + term.length);
+        const after = document.createTextNode(text.slice(idx + term.length));
+        node.replaceWith(before, mark, after);
+      }
+      function search(term){
+        clearMarks();
+        if(!term){
+          results.style.display = "none";
+          results.textContent = "";
+          return;
+        }
+        let hits = 0;
+        $$("[data-searchable]").forEach(sec=>{
+          const walker = document.createTreeWalker(sec, NodeFilter.SHOW_TEXT);
+          let n;
+          while((n = walker.nextNode())){
+            if(n.nodeValue && n.nodeValue.toLowerCase().includes(term)){
+              markText(n, term);
+              hits++;
+            }
+          }
+        });
+        results.style.display = "block";
+        results.innerHTML = `<b>${hits}</b> matches for “${safeText(term)}”`;
+        bumpScore(3);
+      }
+      q.addEventListener("input", ()=>{
+        if(!allow("search", 120)) return;
+        search(q.value.trim().toLowerCase());
+      });
+      $("#clearBtn").addEventListener("click", ()=>{
+        q.value = "";
+        clearMarks();
+        results.style.display = "none";
+      });
+
+      /* =========================================================
+        TOOLTIP: HUD + Progress + Gamification
+      ========================================================== */
+      const kpiRead = $("#kpiRead");
+      const mRead = $("#mRead");
+      const kpiOpen = $("#kpiOpen");
+      const mOpen = $("#mOpen");
+      const kpiScore = $("#kpiScore");
+      const mScore = $("#mScore");
+
+      let score = 0;
+      function bumpScore(n){
+        score += n;
+        kpiScore.textContent = score;
+        mScore.style.width = clamp(score,0,100) + "%";
+        kvSet("hud:score", score).catch(()=>{});
+      }
+
+      function updateHUD(){
+        const pct = updateProgress();
+        const rp = Math.round(pct*100);
+        kpiRead.textContent = rp + "%";
+        mRead.style.width = rp + "%";
+
+        const sections = $$("details.card");
+        const open = sections.filter(d=>d.open).length;
+        kpiOpen.textContent = `${open}/${sections.length}`;
+        mOpen.style.width = sections.length ? (open/sections.length*100)+"%" : "0%";
+      }
+
+      $$("details.card").forEach(d=>{
+        d.addEventListener("toggle", ()=>{
+          bumpScore(d.open ? 2 : 1);
+          updateHUD();
+        });
+      });
+
+      $("#expandAll").addEventListener("click", ()=>{
+        if(!allow("expandAll", 400)) return;
+        $$("details.card").forEach(d=>d.open = true);
+        updateHUD();
+      });
+      $("#collapseAll").addEventListener("click", ()=>{
+        if(!allow("collapseAll", 400)) return;
+        $$("details.card").forEach(d=>d.open = false);
+        updateHUD();
+      });
+      $("#topBtn").addEventListener("click", ()=>{
+        if(!allow("top", 400)) return;
+        window.scrollTo({top:0, behavior:"smooth"});
+      });
+
+      /* =========================================================
+        TOOLTIP: TOC Active State
+      ========================================================== */
+      const tocLinks = $$(".toc a");
+      function updateTOC(){
+        let activeId = null;
+        $$("details.card").forEach(sec=>{
+          const r = sec.getBoundingClientRect();
+          if(r.top < 120) activeId = sec.id;
+        });
+        tocLinks.forEach(a=>{
+          a.classList.toggle("active", a.dataset.jump === activeId);
+        });
+      }
+
+      /* =========================================================
+        TOOLTIP: Mini “What-If” Model (Local-Only)
+        - What: Schematic envelope calculator + tiny chart
+        - How: Replace formulas with your national costing model later
+        - Outcome: Quick pilot sizing + sensitivity framing
+      ========================================================== */
+      const modelOut = $("#modelOut");
+      const chart = $("#chart");
+      const ctx = chart.getContext("2d");
+
+      function nice(n){
+        if(!isFinite(n)) return "—";
+        const abs = Math.abs(n);
+        if(abs >= 1e9) return (n/1e9).toFixed(2) + "B";
+        if(abs >= 1e6) return (n/1e6).toFixed(2) + "M";
+        if(abs >= 1e3) return (n/1e3).toFixed(2) + "K";
+        return String(Math.round(n));
+      }
+
+      function discountFactor(ratePct, years){
+        const r = (ratePct/100);
+        return 1 / Math.pow(1+r, years);
+      }
+
+      function drawBars(values){
+        ctx.clearRect(0,0,chart.width,chart.height);
+        const pad = 18;
+        const w = chart.width - pad*2;
+        const h = chart.height - pad*2;
+        const maxV = Math.max(1, ...values.map(v=>Math.abs(v)));
+        const barW = w / (values.length*1.3);
+        values.forEach((v,i)=>{
+          const x = pad + i*(barW*1.3);
+          const bh = (Math.abs(v)/maxV)*h;
+          const y = pad + (h - bh);
+          ctx.fillStyle = "rgba(184,193,255,.35)";
+          ctx.fillRect(x, y, barW, bh);
+          ctx.fillStyle = "rgba(124,247,212,.65)";
+          ctx.fillRect(x, y, barW, Math.max(2, bh*0.5));
+        });
+        ctx.strokeStyle = "rgba(184,193,255,.35)";
+        ctx.strokeRect(pad, pad, w, h);
+      }
+
+      async function loadModelDefaults(){
+        const saved = await kvGet("model:assumptions");
+        if(saved && typeof saved === "object"){
+          $("#people").value = saved.people ?? $("#people").value;
+          $("#months").value = saved.months ?? $("#months").value;
+          $("#cpm").value = saved.cpm ?? $("#cpm").value;
+          $("#survival").value = saved.survival ?? $("#survival").value;
+          $("#avoided").value = saved.avoided ?? $("#avoided").value;
+          $("#disc").value = saved.disc ?? $("#disc").value;
+        }
+      }
+
+      function computeModel(){
+        // Schematic envelope math (NOT a claim):
+        // - Stabilization OPEX: people * months * cost per person-month
+        // - Avoided costs: people * avoided per participant-year over 7 years discounted
+        // - Tree survival only influences a “confidence factor” in outcomes (proxy)
+        const people = Math.max(0, Number($("#people").value || 0));
+        const months = Math.max(0, Number($("#months").value || 0));
+        const cpm = Math.max(0, Number($("#cpm").value || 0));
+        const survivalPct = clamp(Number($("#survival").value || 0), 0, 100);
+        const avoided = Math.max(0, Number($("#avoided").value || 0));
+        const disc = clamp(Number($("#disc").value || 0), 0, 15);
+
+        const stabilization = people * months * cpm;
+
+        // Discounted avoided costs over 7 years (simple EV)
+        let avoidedPV = 0;
+        for(let y=1; y<=7; y++){
+          avoidedPV += (people * avoided) * discountFactor(disc, y);
+        }
+
+        // “Outcome confidence factor” based on survival (proxy only)
+        const conf = 0.5 + (survivalPct/100)*0.5; // 0.5..1.0
+
+        const netPV = (avoidedPV * conf) - stabilization;
+
+        modelOut.innerHTML =
+          `<b>Local Pilot Envelope (schematic):</b><br/>`+
+          `Stabilization OPEX ≈ <span class="mono">${safeText(nice(stabilization))}</span><br/>`+
+          `7-yr discounted avoided costs ≈ <span class="mono">${safeText(nice(avoidedPV))}</span><br/>`+
+          `Outcome confidence proxy (tree survival) ≈ <span class="mono">${safeText((conf*100).toFixed(0))}%</span><br/>`+
+          `Net present value (proxy) ≈ <span class="mono">${safeText(nice(netPV))}</span><br/>`+
+          `<span class="mono">Reminder: replace these placeholders with national cost baselines + audited effect sizes.</span>`;
+
+        // Tiny chart: [stabilization, avoidedPV*conf, netPV]
+        drawBars([stabilization, avoidedPV*conf, netPV]);
+
+        kvSet("model:assumptions", {people, months, cpm, survival: survivalPct, avoided, disc}).catch(()=>{});
+        bumpScore(5);
+        showToast("Computed (local-only).");
+      }
+
+      $("#calcBtn").addEventListener("click", ()=>{
+        if(!allow("calc", 350)) return;
+        computeModel();
+      });
+
+      $("#exportModel").addEventListener("click", async ()=>{
+        if(!allow("exportModel", 900)) return;
+        const assumptions = await kvGet("model:assumptions") || {
+          people: Number($("#people").value||0),
+          months: Number($("#months").value||0),
+          cpm: Number($("#cpm").value||0),
+          survival: Number($("#survival").value||0),
+          avoided: Number($("#avoided").value||0),
+          disc: Number($("#disc").value||0)
+        };
+        const data = {
+          module: "03",
+          title: "Economic Modeling & Treasury Hooks (RV-NRSP)",
+          assumptions,
+          note: "Local-only schematic export. Replace placeholders with national baselines and audited effect sizes.",
+          exportedAt: nowISO()
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "rvnrsp-module03-model.json";
+        a.click();
+        URL.revokeObjectURL(a.href);
+        showToast("Model exported.");
+      });
+
+      /* =========================================================
+        TOOLTIP: Init
+      ========================================================== */
+      (async function init(){
+        const theme = await kvGet("pref:theme") || "dark";
+        applyTheme(theme).catch(()=>{});
+        $("#themeBtn").addEventListener("click", async ()=>{
+          const t = document.documentElement.dataset.theme === "light" ? "dark" : "light";
+          await applyTheme(t);
+        });
+
+        score = await kvGet("hud:score") || 0;
+        kpiScore.textContent = score;
+        mScore.style.width = clamp(score,0,100) + "%";
+
+        startSplashTimer();
+        updateHUD();
+        updateTOC();
+        await loadModelDefaults();
+        computeModel();
+
+        window.addEventListener("scroll", ()=>{
+          updateHUD();
+          updateTOC();
+        }, {passive:true});
+      })();
+    })();
+  </script>
+</body>
+</html>
