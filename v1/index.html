@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Module 00 — Executive Overview (RV-NRSP) • Foster + Navi</title>
+
+  <!--
+    Zero-Harm & Anti-Inversion Note (Visible + Comment):
+    This page supports civic literacy, policy analysis, and consent-forward governance design.
+    It does NOT encourage harassment, coercion, threats, dehumanization, targeting, destabilization, or exploitation.
+    No telemetry. No auto-send. Everything is stored locally (IndexedDB), user-controlled, and resettable.
+    Inputs are sanitized and gently rate-limited to reduce abuse. Use for understanding and constructive policy work.
+  -->
+
+  <style>
+    /* =========================================================
+      TOOLTIP: Design Tokens
+      - What: Global CSS variables for theme, spacing, typography, radii, shadows
+      - How: Edit :root to re-theme quickly; the whole UI inherits
+      - Outcome: Consistent look across modules + easy future expansion
+    ========================================================== */
+    :root{
+      --bg0:#060815;
+      --bg1:#0b1020;
+      --card:#0f1833;
+      --card2:#101b3b;
+      --ink:#e9eeff;
+      --muted:#b8c1ff;
+      --dim:#8ea0ff;
+      --accent:#7cf7d4;
+      --accent2:#7aa7ff;
+      --warn:#ffd38a;
+      --bad:#ff7aa2;
+      --ok:#8bffb2;
+
+      --ring: 0 0 0 2px rgba(124,247,212,.22), 0 0 0 6px rgba(122,167,255,.12);
+      --shadow: 0 14px 38px rgba(0,0,0,.36);
+      --shadow2: 0 8px 24px rgba(0,0,0,.28);
+
+      --r-xl: 22px;
+      --r-lg: 16px;
+      --r-md: 12px;
+
+      --pad: 18px;
+      --pad2: 14px;
+      --max: 1120px;
+
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 700px at 18% -10%, rgba(122,167,255,.22), transparent 55%),
+        radial-gradient(900px 700px at 90% 0%, rgba(124,247,212,.14), transparent 60%),
+        radial-gradient(1100px 900px at 60% 110%, rgba(255,211,138,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x:hidden;
+    }
+
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding: 76px 16px 28px;}
+
+    /* =========================================================
+      TOOLTIP: Sticky Top Bar + Navigation
+      - What: Always-on controls for search, theme, progress, and quick navigation
+      - How: Add new links into <nav> list; ensure each section has an id
+      - Outcome: Briefings stay usable even when long
+    ========================================================== */
+    .topbar{
+      position:fixed; inset:0 0 auto 0;
+      z-index:50;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(11,16,32,.92), rgba(11,16,32,.72));
+      border-bottom: 1px solid rgba(184,193,255,.12);
+    }
+    .topbar-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding: 10px 14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      min-width: 220px;
+    }
+    .sig{
+      width:34px; height:34px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 30% 30%, rgba(124,247,212,.95), rgba(122,167,255,.55) 60%, rgba(255,211,138,.25) 100%);
+      box-shadow: var(--shadow2);
+      position:relative;
+      overflow:hidden;
+    }
+    .sig:after{
+      content:"";
+      position:absolute; inset:-40%;
+      background: conic-gradient(from 90deg, rgba(255,255,255,.20), transparent 25%, rgba(255,255,255,.10), transparent 60%, rgba(255,255,255,.18));
+      animation: spin 10s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .brand h1{
+      margin:0;
+      font-size: 13px;
+      line-height:1.15;
+      letter-spacing:.2px;
+    }
+    .brand .sub{
+      display:block;
+      font-size: 11px;
+      color: var(--muted);
+      opacity:.9;
+      margin-top:2px;
+    }
+
+    .search{
+      flex:1;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      min-width: 180px;
+    }
+    .search input{
+      width:100%;
+      border-radius: 14px;
+      border: 1px solid rgba(184,193,255,.16);
+      background: rgba(15,24,51,.55);
+      color: var(--ink);
+      padding: 10px 12px;
+      outline:none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+    }
+    .search input:focus{ box-shadow: var(--ring); border-color: rgba(124,247,212,.28); }
+    .btn{
+      border:1px solid rgba(184,193,255,.16);
+      background: rgba(15,24,51,.55);
+      color:var(--ink);
+      border-radius: 14px;
+      padding: 9px 10px;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .08s ease, border-color .15s ease, background .15s ease;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+      white-space:nowrap;
+    }
+    .btn:hover{ border-color: rgba(124,247,212,.28); background: rgba(16,27,59,.68); }
+    .btn:active{ transform: translateY(1px); }
+
+    .mini{
+      display:flex; gap:8px; align-items:center;
+    }
+    .pill{
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      border: 1px solid rgba(184,193,255,.14);
+      border-radius: 999px;
+      padding: 7px 10px;
+      background: rgba(15,24,51,.45);
+    }
+
+    nav{
+      display:none;
+    }
+
+    .progress{
+      height: 2px;
+      background: rgba(122,167,255,.22);
+      position:relative;
+      overflow:hidden;
+    }
+    .progress > i{
+      display:block; height:100%;
+      width: 0%;
+      background: linear-gradient(90deg, rgba(124,247,212,.9), rgba(122,167,255,.9));
+      box-shadow: 0 0 18px rgba(124,247,212,.28);
+    }
+
+    /* =========================================================
+      TOOLTIP: Hero + Parallax Backdrop
+      - What: Large title section with subtle parallax layers
+      - How: Add more .layer elements; JS updates translate values on scroll/mouse
+      - Outcome: Long-form feels alive without heavy dependencies
+    ========================================================== */
+    .hero{
+      position:relative;
+      border-radius: var(--r-xl);
+      background: linear-gradient(180deg, rgba(15,24,51,.75), rgba(16,27,59,.55));
+      border: 1px solid rgba(184,193,255,.14);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+    .hero .kicker{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      border: 1px solid rgba(184,193,255,.14);
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: rgba(6,8,21,.25);
+    }
+    .hero h2{
+      margin: 12px 0 8px;
+      font-size: 28px;
+      letter-spacing: .2px;
+      line-height:1.15;
+    }
+    .hero p{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 85ch;
+    }
+    .hero .meta{
+      margin-top: 14px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+    .tag{
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12px;
+      border: 1px solid rgba(184,193,255,.14);
+      background: rgba(6,8,21,.22);
+      color: var(--muted);
+    }
+    .tag strong{ color: var(--ink); font-weight: 650; }
+
+    .layers{
+      position:absolute; inset:-40px;
+      pointer-events:none;
+      opacity:.9;
+    }
+    .layer{
+      position:absolute; inset:0;
+      background-repeat:no-repeat;
+      transform: translate3d(0,0,0);
+      will-change: transform;
+    }
+    .layer.stars{
+      background-image:
+        radial-gradient(2px 2px at 10% 20%, rgba(255,255,255,.18), transparent 60%),
+        radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,.16), transparent 60%),
+        radial-gradient(2px 2px at 80% 30%, rgba(255,255,255,.14), transparent 60%),
+        radial-gradient(1px 1px at 70% 85%, rgba(255,255,255,.12), transparent 60%),
+        radial-gradient(1px 1px at 20% 90%, rgba(255,255,255,.10), transparent 60%);
+      opacity:.7;
+    }
+    .layer.glow{
+      background-image:
+        radial-gradient(700px 340px at 20% 10%, rgba(122,167,255,.20), transparent 60%),
+        radial-gradient(520px 360px at 85% 18%, rgba(124,247,212,.16), transparent 58%),
+        radial-gradient(700px 460px at 50% 100%, rgba(255,211,138,.10), transparent 55%);
+      opacity: .95;
+      filter: blur(0.2px);
+    }
+    .layer.grid{
+      background-image:
+        linear-gradient(rgba(184,193,255,.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(184,193,255,.08) 1px, transparent 1px);
+      background-size: 64px 64px;
+      opacity:.18;
+      mask-image: radial-gradient(60% 50% at 30% 30%, black, transparent 75%);
+    }
+
+    /* =========================================================
+      TOOLTIP: Layout Cards + Collapsible Sections
+      - What: Content is chunked into <details> blocks with summaries
+      - How: Add sections as <details class="card">; include a summary title
+      - Outcome: Fast skimming for officials; depth for analysts
+    ========================================================== */
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      align-items:start;
+    }
+    @media (min-width: 980px){
+      .grid{ grid-template-columns: 1.25fr .75fr; }
+      nav{ display:block; }
+    }
+
+    .card{
+      border-radius: var(--r-xl);
+      background: linear-gradient(180deg, rgba(15,24,51,.72), rgba(16,27,59,.52));
+      border: 1px solid rgba(184,193,255,.14);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+    }
+    .card .inner{ padding: var(--pad); }
+    .card h3{ margin:0 0 10px; font-size: 16px; letter-spacing:.2px; }
+    .card p, .card li{ color: var(--muted); line-height:1.7; }
+    .card ul{ margin: 10px 0 0 18px; }
+    .card hr{
+      border:0; height:1px;
+      background: rgba(184,193,255,.12);
+      margin: 14px 0;
+    }
+
+    details.card{ padding:0; }
+    details.card summary{
+      list-style:none;
+      cursor:pointer;
+      padding: 14px var(--pad);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      user-select:none;
+    }
+    details.card summary::-webkit-details-marker{ display:none; }
+    .sum-left{
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      min-width:0;
+    }
+    .badge{
+      flex:0 0 auto;
+      width: 30px; height: 30px;
+      border-radius: 12px;
+      background: rgba(124,247,212,.14);
+      border:1px solid rgba(124,247,212,.20);
+      display:grid;
+      place-items:center;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--ink);
+    }
+    .sum-title{
+      min-width:0;
+    }
+    .sum-title strong{
+      display:block;
+      font-size: 14px;
+      letter-spacing:.2px;
+      line-height:1.25;
+    }
+    .sum-title span{
+      display:block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+      line-height:1.25;
+    }
+    .chev{
+      flex:0 0 auto;
+      width: 34px; height: 34px;
+      border-radius: 14px;
+      border:1px solid rgba(184,193,255,.14);
+      display:grid;
+      place-items:center;
+      background: rgba(6,8,21,.18);
+      transition: transform .18s ease;
+    }
+    details[open] summary .chev{ transform: rotate(180deg); }
+    details.card .inner{ padding: 0 var(--pad) var(--pad); }
+    details.card summary:hover{ background: rgba(6,8,21,.14); }
+
+    /* =========================================================
+      TOOLTIP: Right Rail (TOC + HUD + Constellation)
+      - What: A compact “control tower” with navigation + gamified status
+      - How: Add anchors for new sections; constellation auto-updates
+      - Outcome: Encourages completion and maintains orientation
+    ========================================================== */
+    .rail{
+      position: sticky;
+      top: 74px;
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+    }
+    .toc{
+      border-radius: var(--r-xl);
+      background: linear-gradient(180deg, rgba(15,24,51,.70), rgba(16,27,59,.50));
+      border: 1px solid rgba(184,193,255,.14);
+      box-shadow: var(--shadow2);
+      padding: 12px;
+    }
+    .toc h4{ margin: 4px 8px 10px; font-size: 12px; color: var(--muted); letter-spacing:.2px; }
+    .toc a{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 9px 10px;
+      border-radius: 14px;
+      text-decoration:none;
+      color: var(--muted);
+      border: 1px solid transparent;
+    }
+    .toc a:hover{
+      border-color: rgba(124,247,212,.22);
+      background: rgba(6,8,21,.14);
+      color: var(--ink);
+    }
+    .toc a .dot{
+      width:8px; height:8px; border-radius: 50%;
+      background: rgba(184,193,255,.30);
+      box-shadow: 0 0 0 2px rgba(184,193,255,.10);
+      flex:0 0 auto;
+    }
+    .toc a.active{
+      border-color: rgba(124,247,212,.30);
+      background: rgba(124,247,212,.08);
+      color: var(--ink);
+    }
+    .toc a.active .dot{ background: rgba(124,247,212,.75); box-shadow: 0 0 0 2px rgba(124,247,212,.18); }
+
+    .hud{
+      border-radius: var(--r-xl);
+      background: linear-gradient(180deg, rgba(15,24,51,.70), rgba(16,27,59,.50));
+      border: 1px solid rgba(184,193,255,.14);
+      box-shadow: var(--shadow2);
+      padding: 12px;
+    }
+    .hud h4{ margin: 4px 8px 10px; font-size: 12px; color: var(--muted); letter-spacing:.2px; }
+    .hud .row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding: 8px 8px;
+      border-radius: 14px;
+      border: 1px solid rgba(184,193,255,.10);
+      background: rgba(6,8,21,.14);
+      margin-bottom: 8px;
+    }
+    .hud .row:last-child{ margin-bottom:0; }
+    .kpi{
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.2;
+      flex:1;
+    }
+    .kpi strong{
+      display:block;
+      font-size: 13px;
+      color: var(--ink);
+      margin-bottom:2px;
+    }
+    .meter{
+      width: 84px;
+      height: 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(184,193,255,.14);
+      overflow:hidden;
+      background: rgba(15,24,51,.45);
+      flex:0 0 auto;
+    }
+    .meter > i{
+      display:block; height:100%;
+      width: 0%;
+      background: linear-gradient(90deg, rgba(124,247,212,.9), rgba(122,167,255,.9));
+    }
+
+    .constellation{
+      border-radius: var(--r-xl);
+      background: linear-gradient(180deg, rgba(15,24,51,.70), rgba(16,27,59,.50));
+      border: 1px solid rgba(184,193,255,.14);
+      box-shadow: var(--shadow2);
+      padding: 12px;
+    }
+    .constellation h4{ margin: 4px 8px 10px; font-size: 12px; color: var(--muted); letter-spacing:.2px; }
+    canvas{ display:block; width:100%; height: 180px; border-radius: 16px; border:1px solid rgba(184,193,255,.10); background: rgba(6,8,21,.18); }
+
+    /* =========================================================
+      TOOLTIP: Search Highlighting + Results
+      - What: Client-side search through briefing text, with highlights
+      - How: Update data-searchable attributes on new sections
+      - Outcome: Fast retrieval during meetings
+    ========================================================== */
+    mark{
+      background: rgba(255,211,138,.22);
+      color: var(--ink);
+      padding: 0 .12em;
+      border-radius: .28em;
+      box-shadow: inset 0 0 0 1px rgba(255,211,138,.18);
+    }
+    .results{
+      display:none;
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: var(--r-lg);
+      border: 1px solid rgba(184,193,255,.14);
+      background: rgba(6,8,21,.16);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .results b{ color: var(--ink); }
+
+    /* =========================================================
+      TOOLTIP: Footer + Print Styles
+      - What: Visible zero-harm note, attributions, and print-friendly output
+      - How: Expand the attributions list as you adapt patterns
+      - Outcome: Safe sharing; predictable printing
+    ========================================================== */
+    footer{
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: var(--r-xl);
+      border: 1px solid rgba(184,193,255,.14);
+      background: rgba(6,8,21,.16);
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    footer h4{ margin: 0 0 8px; font-size: 13px; color: var(--ink); }
+    .footgrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 860px){
+      .footgrid{ grid-template-columns: 1fr 1fr; }
+    }
+    .small{ font-size: 12px; }
+    .mono{ font-family: var(--mono); }
+    .danger, .ok{
+      display:inline-flex; gap:8px; align-items:center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(184,193,255,.14);
+      background: rgba(6,8,21,.14);
+      margin-top: 8px;
+    }
+    .danger{ color: var(--warn); }
+    .ok{ color: var(--ok); }
+
+    /* Splash */
+    .splash{
+      position:fixed; inset:0;
+      z-index:80;
+      display:grid;
+      place-items:center;
+      background:
+        radial-gradient(900px 600px at 20% 20%, rgba(122,167,255,.22), transparent 60%),
+        radial-gradient(800px 540px at 80% 10%, rgba(124,247,212,.16), transparent 60%),
+        linear-gradient(180deg, rgba(6,8,21,.96), rgba(11,16,32,.96));
+      transition: opacity .35s ease, transform .35s ease;
+    }
+    .splash[hidden]{ display:none; }
+    .splash.fade{ opacity:0; transform: translateY(-6px); pointer-events:none; }
+    .splash-card{
+      width: min(720px, calc(100% - 28px));
+      border-radius: 26px;
+      border: 1px solid rgba(184,193,255,.16);
+      background: linear-gradient(180deg, rgba(15,24,51,.72), rgba(16,27,59,.54));
+      box-shadow: var(--shadow);
+      padding: 18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .splash-x{
+      position:absolute;
+      top: 12px; right: 12px;
+      width: 38px; height: 38px;
+      border-radius: 16px;
+      border: 1px solid rgba(184,193,255,.14);
+      background: rgba(6,8,21,.20);
+      color: var(--ink);
+      cursor:pointer;
+      font-size: 18px;
+      line-height: 38px;
+      text-align:center;
+      user-select:none;
+    }
+    .splash-x:hover{ border-color: rgba(124,247,212,.28); background: rgba(16,27,59,.64); }
+    .splash-title{
+      display:flex; align-items:center; gap:12px;
+    }
+    .splash-title h2{
+      margin:0;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+    .splash-title p{
+      margin: 6px 0 0;
+      color: var(--muted);
+      line-height:1.6;
+    }
+    .splash-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top: 12px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .splash-actions .left{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+    }
+    .hint{
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    /* Toast */
+    .toast{
+      position: fixed;
+      inset: auto 12px 12px auto;
+      z-index: 70;
+      min-width: 220px;
+      max-width: 360px;
+      border-radius: 18px;
+      border: 1px solid rgba(184,193,255,.14);
+      background: rgba(6,8,21,.78);
+      box-shadow: var(--shadow2);
+      padding: 10px 12px;
+      color: var(--muted);
+      transform: translateY(10px);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .2s ease, transform .2s ease;
+    }
+    .toast.show{ opacity:1; transform: translateY(0); }
+    .toast b{ color: var(--ink); }
+
+    /* Print */
+    @media print{
+      .topbar,.splash,.toast,.rail{ display:none !important; }
+      body{ background:#fff; color:#111; }
+      .hero,.card,footer{ box-shadow:none; background:#fff; border:1px solid #ddd; }
+      .wrap{ padding-top: 10px; max-width: 100%; }
+      a{ text-decoration: none; }
+      mark{ background: #ffefc6; color:#111; box-shadow:none; }
+    }
+
+    /* Reduced Motion */
+    @media (prefers-reduced-motion: reduce){
+      *{ animation: none !important; transition: none !important; scroll-behavior:auto !important; }
+      .layer{ transform:none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- =========================================================
+    TOOLTIP: Splash Screen
+    - What: Animated entry overlay with safety note + local-only storage notice
+    - How: Edit the copy inside .splash-card; change the auto-close timer in JS
+    - Outcome: Users understand intent + controls before interacting
+  ========================================================== -->
+  <section id="splash" class="splash" aria-label="Intro splash">
+    <div class="splash-card">
+      <div class="splash-x" id="splashClose" title="Close (Esc)">×</div>
+      <div class="splash-title">
+        <div class="sig" aria-hidden="true"></div>
+        <div>
+          <h2>Module 00 — Executive Overview</h2>
+          <p class="hint">
+            RV-NRSP: Restoration Visas & National Regenerative Settlement Program<br/>
+            Offline-first briefing kit • local-only storage • print-ready
+          </p>
+        </div>
+      </div>
+
+      <div class="splash-actions">
+        <div class="left">
+          <button class="btn" id="enterBtn" title="Enter the briefing">Enter Briefing</button>
+          <button class="btn" id="resetBtn" title="Reset local preferences and notes">Reset Local Data</button>
+          <button class="btn" id="printBtn" title="Print this module">Print</button>
+        </div>
+        <div class="hint">
+          Auto-closes in <span class="mono" id="timer">05</span>s • Press <span class="mono">Esc</span> to close
+        </div>
+      </div>
+
+      <div class="results" style="display:block;margin-top:12px;">
+        <b>Zero-Harm / Anti-Inversion:</b> This toolkit is for constructive policy work.
+        No targeting, no coercion, no auto-send, no telemetry. Everything stays on-device.
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+    TOOLTIP: Top Bar
+    - What: Persistent controls + search
+    - How: Wire new buttons in JS; keep input sanitized
+    - Outcome: Faster navigation in real meetings
+  ========================================================== -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand" title="Module identity">
+        <div class="sig" aria-hidden="true"></div>
+        <h1>
+          Module 00 • Executive Overview
+          <span class="sub">RV-NRSP (Restoration Visas & Regenerative Settlement)</span>
+        </h1>
+      </div>
+
+      <div class="search" title="Client-side search (local-only)">
+        <input id="q" type="search" inputmode="search" autocomplete="off" spellcheck="false"
+               placeholder="Search this briefing (e.g., ROI, Phase II, ethics, pilot)..." />
+        <button class="btn" id="clearBtn" title="Clear search">Clear</button>
+      </div>
+
+      <div class="mini">
+        <span class="pill" id="storeStatus" title="Offline-first: local storage status">Storage: …</span>
+        <button class="btn" id="themeBtn" title="Toggle theme">Theme</button>
+        <button class="btn" id="notesBtn" title="Toggle quick notes panel">Notes</button>
+      </div>
+    </div>
+    <div class="progress" aria-hidden="true"><i id="pbar"></i></div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero" id="top">
+      <div class="layers" aria-hidden="true">
+        <div class="layer glow" id="layerGlow"></div>
+        <div class="layer grid" id="layerGrid"></div>
+        <div class="layer stars" id="layerStars"></div>
+      </div>
+
+      <span class="kicker">🏛️ Policy Briefing • 🌱 Regenerative Infrastructure • 📘 Module 00</span>
+      <h2>Restoration Visas & National Regenerative Settlement Program (RV-NRSP)</h2>
+      <p>
+        A systems-integrated approach that aligns immigration, ecological restoration, housing stabilization, and food resilience
+        into a single auditable program—designed for pilot deployment, fiscal defensibility, and ethical viability.
+      </p>
+
+      <div class="meta">
+        <span class="tag"><strong>Audience:</strong> Ministers, DMs, policy directors, treasury reviewers</span>
+        <span class="tag"><strong>Horizon:</strong> 0–6 months stabilization • 6–36 months participation • 3–7 years returns</span>
+        <span class="tag"><strong>Mode:</strong> Offline-first • local-only • print-ready</span>
+      </div>
+
+      <div class="results" id="results" aria-live="polite"></div>
+    </section>
+
+    <section class="grid">
+      <section>
+        <!-- =========================================================
+          TOOLTIP: Content Sections (Details Cards)
+          - What: Each section is independently collapsible and searchable
+          - How: Add id + data-searchable; keep summaries short, outcomes clear
+          - Outcome: Decision-makers can skim; analysts can dive
+        ========================================================== -->
+
+        <details class="card" id="s-01" data-searchable open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">00</div>
+              <div class="sum-title">
+                <strong>0.1 Purpose of This Brief</strong>
+                <span>What this module is for, and how it should be used in senior review</span>
+              </div>
+            </div>
+            <div class="chev" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="inner">
+            <p>
+              This module provides senior government officials and policy makers with a <b>systems-level overview</b> of a proposed national program
+              integrating immigration, ecological restoration, housing stabilization, and food resilience into a single, auditable framework.
+            </p>
+            <p>
+              The intent is not to add another social program, but to <b>re-align existing state capacities</b> so that expenditures currently treated as costs
+              become long-horizon <b>productive assets</b>.
+            </p>
+          </div>
+        </details>
+
+        <details class="card" id="s-02" data-searchable open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">01</div>
+              <div class="sum-title">
+                <strong>0.2 The Core Proposition (Plain Language)</strong>
+                <span>Restoration Visas: stabilization on arrival + paid participation + clear residency pathways</span>
+              </div>
+            </div>
+            <div class="chev" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="inner">
+            <p>
+              Offer a dedicated immigration and residency pathway—<b>Restoration Visas</b>—to individuals and families who voluntarily participate
+              in structured national reforestation and ecological infrastructure programs.
+            </p>
+            <hr/>
+            <p><b>Upon arrival, participants receive:</b></p>
+            <ul>
+              <li>Immediate stabilization (housing, food access, healthcare enrollment)</li>
+              <li>Paid, dignified participation in restoration and shelter programs</li>
+              <li>Clear pathways to permanent residency or citizenship</li>
+            </ul>
+            <p><b>The state receives:</b></p>
+            <ul>
+              <li>Accelerated reforestation and climate resilience infrastructure</li>
+              <li>Distributed food-producing assets (fruit/nut corridors + supporting ecology)</li>
+              <li>Reduced long-run welfare, health, and disaster-response costs</li>
+              <li>Stabilization of underutilized regions through purposeful settlement</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="card" id="s-03" data-searchable open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">02</div>
+              <div class="sum-title">
+                <strong>0.3 Why This Is a Systems Solution (Not a Moral Argument)</strong>
+                <span>Breaks silo failure: immigration ↔ housing ↔ land use ↔ food ↔ resilience</span>
+              </div>
+            </div>
+            <div class="chev" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="inner">
+            <p>
+              Many failures in this domain originate from <b>siloed governance</b>: immigration, housing, land-use, food, and climate resilience are treated
+              as separate problems with separate budgets and separate success metrics.
+            </p>
+            <p>
+              RV-NRSP treats these as a <b>coupled system</b>. In systems engineering terms, it aims to reduce negative externalities, increase beneficial
+              feedback loops, and convert transient inputs (people and funding) into durable outputs (trees, soil stability, housing stock, local food assets).
+            </p>
+            <p class="mono" style="color:var(--dim)">
+              Working framing: “thermodynamics applied to governance” — not ideology, but flow, constraints, and compounding returns.
+            </p>
+          </div>
+        </details>
+
+        <details class="card" id="s-04" data-searchable open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">03</div>
+              <div class="sum-title">
+                <strong>0.4 Strategic Context (Why Now)</strong>
+                <span>Four converging pressures: demographics, housing, food/water fragility, disaster costs</span>
+              </div>
+            </div>
+            <div class="chev" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="inner">
+            <p>Across developed nations, four pressures increasingly converge:</p>
+            <ul>
+              <li><b>Demographic imbalance:</b> aging populations, labor shortages, declining rural density</li>
+              <li><b>Housing constraints:</b> financialized markets and supply bottlenecks undermining affordability</li>
+              <li><b>Food and water fragility:</b> climate volatility stressing centralized supply chains</li>
+              <li><b>Escalating disaster costs:</b> fires, floods, heatwaves, droughts consuming public budgets</li>
+            </ul>
+            <p>
+              Treating these separately compounds cost. Treating them together can <b>compound benefit</b>.
+            </p>
+          </div>
+        </details>
+
+        <details class="card" id="s-05" data-searchable open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">04</div>
+              <div class="sum-title">
+                <strong>0.5 Program Architecture (High Level)</strong>
+                <span>Phase I: stabilization • Phase II: paid tracks • Phase III: compounding returns</span>
+              </div>
+            </div>
+            <div class="chev" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="inner">
+            <h3>Phase I — Stabilization (0–6 months)</h3>
+            <ul>
+              <li>Arrival housing (hotels, modular units, repurposed facilities)</li>
+              <li>Guaranteed food access (public kitchens, vouchers, local partnerships)</li>
+              <li>Healthcare enrollment and orientation</li>
+              <li>Language and civic onboarding</li>
+            </ul>
+            <p>
+              This phase exists to eliminate predictable failure modes and protect public legitimacy—<b>not</b> to extract labor.
+            </p>
+            <hr/>
+            <h3>Phase II — Regenerative Participation (6 months–3 years)</h3>
+            <p>Participants engage in <b>paid, voluntary tracks</b>, such as:</p>
+            <ul>
+              <li>Fruit and nut tree planting corridors (plus native support species)</li>
+              <li>Soil regeneration and water retention projects</li>
+              <li>Modular and prefab shelter construction</li>
+              <li>Urban and peri-urban greening</li>
+            </ul>
+            <p>Participation is logged, auditable, and skills-certified.</p>
+            <hr/>
+            <h3>Phase III — Compounding Returns (3–7 years)</h3>
+            <ul>
+              <li>Trees begin productive yield</li>
+              <li>Local food systems stabilize</li>
+              <li>Heat/flood impacts reduce (shade + soil + water effects)</li>
+              <li>Healthcare and disaster costs decline</li>
+              <li>Communities transition toward partial self-sufficiency</li>
+            </ul>
+            <p>This is where visible political dividends emerge.</p>
+          </div>
+        </details>
+
+        <details class="card" id="s-06" data-searchable open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">05</div>
+              <div class="sum-title">
+                <strong>0.6 Economic Logic (Executive Summary)</strong>
+                <span>Reclassify costs into infrastructure; emphasize avoided-cost pathways</span>
+              </div>
+            </div>
+            <div class="chev" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="inner">
+            <p>This program reframes spending categories:</p>
+            <ul>
+              <li>Immigration supports → <b>infrastructure investment</b></li>
+              <li>Climate mitigation → <b>productive asset creation</b></li>
+              <li>Housing assistance → <b>skills + capital formation</b></li>
+              <li>Disaster response → <b>avoided future expenditure</b></li>
+            </ul>
+            <p>
+              Key insight: a fruit tree is a multi-decade public asset with low ongoing costs and compounding local benefits
+              (nutrition, microclimate moderation, soil stabilization, biodiversity support).
+            </p>
+            <p class="mono" style="color:var(--dim)">
+              Treasury hook: “front-loaded cost, back-loaded savings” + “durable assets with measurable service life.”
+            </p>
+          </div>
+        </details>
+
+        <details class="card" id="s-07" data-searchable open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">06</div>
+              <div class="sum-title">
+                <strong>0.7 Ethical & Legal Positioning</strong>
+                <span>Voluntary, paid, rights-preserving, auditable; citizens can opt in too</span>
+              </div>
+            </div>
+            <div class="chev" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="inner">
+            <p>The program is designed to be:</p>
+            <ul>
+              <li><b>Voluntary:</b> no coercion, forced labor, or punitive “work-for-rights” structures</li>
+              <li><b>Paid:</b> participation meets labor standards and safety requirements</li>
+              <li><b>Rights-preserving:</b> protections equal or superior to existing pathways</li>
+              <li><b>Auditable:</b> transparent metrics; no opaque enforcement mechanisms</li>
+            </ul>
+            <p>
+              Citizens can opt into equivalent tracks, preventing “two-tier” optics and expanding capacity without stigma.
+            </p>
+          </div>
+        </details>
+
+        <details class="card" id="s-08" data-searchable open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">07</div>
+              <div class="sum-title">
+                <strong>0.8 Political Viability Considerations</strong>
+                <span>Cross-alignment appeal: ROI, order, dignity, visible local wins</span>
+              </div>
+            </div>
+            <div class="chev" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="inner">
+            <p>
+              The framework is resilient across political alignments because it can be argued from multiple foundations:
+            </p>
+            <ul>
+              <li>Fiscal conservatism: ROI framing, avoided-cost pathways, durable assets</li>
+              <li>Centrist governance: orderly immigration, infrastructure integration, accountable delivery</li>
+              <li>Progressive policy: dignity, sustainability, equity, community resilience</li>
+            </ul>
+            <p>
+              It does not require agreement on climate narratives to function. It requires agreement on long-term national self-interest and
+              measurable outcomes.
+            </p>
+          </div>
+        </details>
+
+        <details class="card" id="s-09" data-searchable open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">08</div>
+              <div class="sum-title">
+                <strong>0.9 Pilot Readiness</strong>
+                <span>Designed for pilots: clear geographies, concrete metrics, defensible scope</span>
+              </div>
+            </div>
+            <div class="chev" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="inner">
+            <p>This program is explicitly designed for <b>pilot deployment</b>, not immediate nationwide rollout.</p>
+            <p><b>Ideal pilot zones include:</b></p>
+            <ul>
+              <li>Fire-damaged regions</li>
+              <li>Depopulating rural areas</li>
+              <li>Drought-prone agricultural margins</li>
+              <li>Peri-urban land under public ownership</li>
+            </ul>
+            <p>
+              Success metrics should be concrete, local, and auditable (e.g., survival rates of planted stock, hectares restored,
+              housing units stabilized, training completions, food yield projections once in-bearing).
+            </p>
+          </div>
+        </details>
+
+        <details class="card" id="s-10" data-searchable open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">09</div>
+              <div class="sum-title">
+                <strong>0.10 What This Module Is (and Is Not)</strong>
+                <span>Clarifies scope: framing document now; legislation/ops later</span>
+              </div>
+            </div>
+            <div class="chev" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="inner">
+            <p><b>This module is:</b></p>
+            <ul>
+              <li>A strategic framing document</li>
+              <li>A briefing surface for senior decision-makers</li>
+              <li>A foundation for downstream technical modules</li>
+            </ul>
+            <p><b>This module is not:</b></p>
+            <ul>
+              <li>A legislative draft</li>
+              <li>An operational manual</li>
+              <li>A public communications piece</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="card" id="s-11" data-searchable open>
+          <summary>
+            <div class="sum-left">
+              <div class="badge">10</div>
+              <div class="sum-title">
+                <strong>0.11 Transition to Module 01</strong>
+                <span>Next: formal rationale, systems map, failure-mode analysis, hostile review prep</span>
+              </div>
+            </div>
+            <div class="chev" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="inner">
+            <p>
+              Module 01 formalizes the policy rationale with:
+            </p>
+            <ul>
+              <li>Systems dynamics mapping (flows, constraints, feedback loops)</li>
+              <li>Economic theory framing (public goods, avoided costs, asset service life)</li>
+              <li>Historical analogues (nation-building programs, settlement models, conservation corps)</li>
+              <li>Failure-mode and effects analysis (FMEA) to pre-empt predictable attacks</li>
+            </ul>
+            <p class="mono" style="color:var(--dim)">
+              Design goal: survive hostile review without sliding into coercion, stigma, or complexity collapse.
+            </p>
+            <hr/>
+            <p><b>Closing Note (for Officials):</b></p>
+            <p>
+              This proposal does not ask the state to be more generous.
+              It asks the state to be more intelligent with what it already does.
+            </p>
+          </div>
+        </details>
+
+        <!-- Quick Notes Panel (toggle) -->
+        <section class="card" id="notesPanel" style="display:none">
+          <div class="inner">
+            <h3>Quick Notes (Local-Only)</h3>
+            <p class="small">
+              Notes are stored on-device in IndexedDB. Nothing is transmitted. Keep sensitive info out anyway—future-proofing is classy.
+            </p>
+            <textarea id="notes" rows="8" style="width:100%;border-radius:16px;border:1px solid rgba(184,193,255,.16);background:rgba(15,24,51,.55);color:var(--ink);padding:12px;outline:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)"></textarea>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+              <button class="btn" id="saveNotes">Save Notes</button>
+              <button class="btn" id="exportNotes">Export Notes (JSON)</button>
+              <button class="btn" id="clearNotes">Clear Notes</button>
+            </div>
+            <p class="small mono" id="notesMeta" style="margin-top:10px;color:var(--dim)">—</p>
+          </div>
+        </section>
+
+        <footer>
+          <div class="footgrid">
+            <div>
+              <h4>Zero-Harm & Anti-Inversion</h4>
+              <div class="danger">🛡️ This toolkit rejects harassment, coercion, threats, dehumanization, targeting, and destabilization.</div>
+              <div class="ok">🌿 Local-only, user-controlled storage. No telemetry. No auto-send. Reset anytime.</div>
+              <p class="small" style="margin-top:10px">
+                Use this document to improve policy design and public outcomes—never to pressure individuals, groups, or institutions through fear or force.
+              </p>
+            </div>
+            <div>
+              <h4>Attributions & Licensing (Human-Readable)</h4>
+              <p class="small">
+                This page uses <b>original code</b> with broadly common UI patterns (sticky header, collapsible sections, client-side search, offline storage).
+                No proprietary code copied. No external libraries. Intended to be easy to port into a repo structure.
+              </p>
+              <p class="small mono">
+                Suggested repo labels: “policy-toolkit”, “offline-first”, “briefing”, “systems-design”
+              </p>
+              <p class="small">
+                Add your project’s chosen license file in the repo root (e.g., CC BY 4.0 for content + MIT for code), depending on your deployment goals.
+              </p>
+            </div>
+          </div>
+        </footer>
+      </section>
+
+      <aside class="rail">
+        <div class="toc" aria-label="Table of contents">
+          <h4>Jump (TOC)</h4>
+          <a href="#s-01" data-jump="s-01"><span style="display:flex;gap:10px;align-items:center"><i class="dot"></i>0.1 Purpose</span><span class="mono">00</span></a>
+          <a href="#s-02" data-jump="s-02"><span style="display:flex;gap:10px;align-items:center"><i class="dot"></i>0.2 Core Proposition</span><span class="mono">01</span></a>
+          <a href="#s-03" data-jump="s-03"><span style="display:flex;gap:10px;align-items:center"><i class="dot"></i>0.3 Systems Solution</span><span class="mono">02</span></a>
+          <a href="#s-04" data-jump="s-04"><span style="display:flex;gap:10px;align-items:center"><i class="dot"></i>0.4 Why Now</span><span class="mono">03</span></a>
+          <a href="#s-05" data-jump="s-05"><span style="display:flex;gap:10px;align-items:center"><i class="dot"></i>0.5 Architecture</span><span class="mono">04</span></a>
+          <a href="#s-06" data-jump="s-06"><span style="display:flex;gap:10px;align-items:center"><i class="dot"></i>0.6 Economic Logic</span><span class="mono">05</span></a>
+          <a href="#s-07" data-jump="s-07"><span style="display:flex;gap:10px;align-items:center"><i class="dot"></i>0.7 Ethics & Legal</span><span class="mono">06</span></a>
+          <a href="#s-08" data-jump="s-08"><span style="display:flex;gap:10px;align-items:center"><i class="dot"></i>0.8 Political Viability</span><span class="mono">07</span></a>
+          <a href="#s-09" data-jump="s-09"><span style="display:flex;gap:10px;align-items:center"><i class="dot"></i>0.9 Pilot Readiness</span><span class="mono">08</span></a>
+          <a href="#s-10" data-jump="s-10"><span style="display:flex;gap:10px;align-items:center"><i class="dot"></i>0.10 Scope</span><span class="mono">09</span></a>
+          <a href="#s-11" data-jump="s-11"><span style="display:flex;gap:10px;align-items:center"><i class="dot"></i>0.11 Next Module</span><span class="mono">10</span></a>
+        </div>
+
+        <div class="hud" aria-label="Gamification HUD">
+          <h4>HUD (Local-Only)</h4>
+          <div class="row">
+            <div class="kpi"><strong id="kpiRead">0%</strong>Read Progress</div>
+            <div class="meter" aria-hidden="true"><i id="mRead"></i></div>
+          </div>
+          <div class="row">
+            <div class="kpi"><strong id="kpiOpen">0/0</strong>Sections Opened</div>
+            <div class="meter" aria-hidden="true"><i id="mOpen"></i></div>
+          </div>
+          <div class="row">
+            <div class="kpi"><strong id="kpiScore">0</strong>Clarity Score</div>
+            <div class="meter" aria-hidden="true"><i id="mScore"></i></div>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+            <button class="btn" id="expandAll">Expand All</button>
+            <button class="btn" id="collapseAll">Collapse All</button>
+            <button class="btn" id="topBtn">Back to Top</button>
+          </div>
+          <p class="small" style="margin:10px 6px 2px;color:var(--dim)">
+            “Clarity Score” is a local gamified nudge: search use + notes saved + sections opened. Nothing leaves your device.
+          </p>
+        </div>
+
+        <div class="constellation" aria-label="Constellation state visualizer">
+          <h4>Constellation (State Visualizer)</h4>
+          <canvas id="sky" width="480" height="180"></canvas>
+          <p class="small" style="margin:10px 6px 2px;color:var(--dim)">
+            Nodes = sections. Lines strengthen as you open/engage. A tiny mythic dashboard for a very non-mythic task.
+          </p>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <noscript>
+    <div style="max-width:960px;margin:90px auto 18px;padding:14px;border:1px solid #ddd;border-radius:16px;background:#fff;color:#111">
+      <b>JavaScript is disabled.</b> This briefing still renders, but offline storage, search, the HUD, and constellation visuals won’t work.
+      You can still read, print, and copy the content safely.
+    </div>
+  </noscript>
+
+  <script>
+    /* =========================================================
+      TOOLTIP: Safety + Input Hygiene
+      - What: Minimal sanitization, gentle rate limiting, and no auto-send policy
+      - How: Use safeText() before injecting user-provided strings into HTML
+      - Outcome: Reduces XSS risk and abuse patterns in offline tools
+    ========================================================== */
+    (function(){
+      "use strict";
+
+      const $ = (q, el=document) => el.querySelector(q);
+      const $$ = (q, el=document) => Array.from(el.querySelectorAll(q));
+
+      const safeText = (s) => String(s ?? "").replace(/[<>&]/g, ch => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[ch]));
+      const clamp = (n,min,max)=>Math.max(min,Math.min(max,n));
+      const nowISO = ()=> new Date().toISOString();
+
+      // Gentle rate limiter (per action key)
+      const rate = new Map();
+      function allow(key, ms){
+        const t = performance.now();
+        const last = rate.get(key) || 0;
+        if (t - last < ms) return false;
+        rate.set(key, t);
+        return true;
+      }
+
+      /* =========================================================
+        TOOLTIP: IndexedDB (Local-Only State)
+        - What: Persistent storage for preferences, HUD stats, and notes
+        - How: Add stores by bumping DB_VERSION and creating object stores in onupgradeneeded
+        - Outcome: Offline reliability without external services
+      ========================================================== */
+      const DB_NAME = "rvnrsp_module00_db";
+      const DB_VERSION = 1;
+      const STORE = "kv";
+
+      function openDB(){
+        return new Promise((resolve, reject)=>{
+          const req = indexedDB.open(DB_NAME, DB_VERSION);
+          req.onupgradeneeded = (e)=>{
+            const db = req.result;
+            if(!db.objectStoreNames.contains(STORE)){
+              db.createObjectStore(STORE, { keyPath: "k" });
+            }
+          };
+          req.onsuccess = ()=> resolve(req.result);
+          req.onerror = ()=> reject(req.error);
+        });
+      }
+      async function kvSet(k, v){
+        const db = await openDB();
+        return new Promise((resolve, reject)=>{
+          const tx = db.transaction(STORE, "readwrite");
+          tx.objectStore(STORE).put({k, v, t: nowISO()});
+          tx.oncomplete = ()=> resolve(true);
+          tx.onerror = ()=> reject(tx.error);
+        });
+      }
+      async function kvGet(k){
+        const db = await openDB();
+        return new Promise((resolve, reject)=>{
+          const tx = db.transaction(STORE, "readonly");
+          const req = tx.objectStore(STORE).get(k);
+          req.onsuccess = ()=> resolve(req.result ? req.result.v : null);
+          req.onerror = ()=> reject(req.error);
+        });
+      }
+      async function kvDel(k){
+        const db = await openDB();
+        return new Promise((resolve, reject)=>{
+          const tx = db.transaction(STORE, "readwrite");
+          tx.objectStore(STORE).delete(k);
+          tx.oncomplete = ()=> resolve(true);
+          tx.onerror = ()=> reject(tx.error);
+        });
+      }
+      async function kvClear(){
+        const db = await openDB();
+        return new Promise((resolve, reject)=>{
+          const tx = db.transaction(STORE, "readwrite");
+          tx.objectStore(STORE).clear();
+          tx.oncomplete = ()=> resolve(true);
+          tx.onerror = ()=> reject(tx.error);
+        });
+      }
+
+      const toast = $("#toast");
+      let toastTimer = null;
+      function showToast(msg){
+        toast.innerHTML = safeText(msg);
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(()=>toast.classList.remove("show"), 2200);
+      }
+
+      /* =========================================================
+        TOOLTIP: Theme Toggle
+        - What: Simple light/dark toggle using data-theme
+        - How: Extend tokens for light mode if desired
+        - Outcome: Better accessibility across environments
+      ========================================================== */
+      async function applyTheme(theme){
+        document.documentElement.dataset.theme = theme;
+        if(theme === "light"){
+          document.documentElement.style.setProperty("--bg0", "#f6f7ff");
+          document.documentElement.style.setProperty("--bg1", "#eef1ff");
+          document.documentElement.style.setProperty("--card", "#ffffff");
+          document.documentElement.style.setProperty("--card2", "#ffffff");
+          document.documentElement.style.setProperty("--ink", "#101526");
+          document.documentElement.style.setProperty("--muted", "#3a4668");
+          document.documentElement.style.setProperty("--dim", "#4a5a86");
+          document.documentElement.style.setProperty("--shadow", "0 14px 38px rgba(0,0,0,.12)");
+          document.documentElement.style.setProperty("--shadow2", "0 8px 24px rgba(0,0,0,.10)");
+        } else {
+          // revert to defaults by removing inline overrides
+          const root = document.documentElement.style;
+          ["--bg0","--bg1","--card","--card2","--ink","--muted","--dim","--shadow","--shadow2"].forEach(v=>root.removeProperty(v));
+        }
+        await kvSet("pref:theme", theme);
+      }
+
+      /* =========================================================
+        TOOLTIP: Splash Behavior
+        - What: Auto-closes after 5 seconds + manual close + Esc
+        - How: Adjust AUTO_CLOSE_MS; call closeSplash() to hide
+        - Outcome: Smooth entry without trapping users
+      ========================================================== */
+      const splash = $("#splash");
+      const timerEl = $("#timer");
+      const AUTO_CLOSE_MS = 5000;
+
+      function closeSplash(){
+        if(!splash || splash.classList.contains("fade")) return;
+        splash.classList.add("fade");
+        setTimeout(()=>{ splash.hidden = true; }, 360);
+        kvSet("ui:splashDismissedAt", nowISO()).catch(()=>{});
+      }
+
+      function startSplashTimer(){
+        let left = 5;
+        timerEl.textContent = String(left).padStart(2,"0");
+        const t = setInterval(()=>{
+          left -= 1;
+          timerEl.textContent = String(clamp(left,0,99)).padStart(2,"0");
+          if(left <= 0){
+            clearInterval(t);
+          }
+        }, 1000);
+        setTimeout(()=> closeSplash(), AUTO_CLOSE_MS);
+      }
+
+      $("#enterBtn").addEventListener("click", ()=> closeSplash());
+      $("#splashClose").addEventListener("click", ()=> closeSplash());
+      document.addEventListener("keydown", (e)=>{
+        if(e.key === "Escape") closeSplash();
+      });
+
+      $("#printBtn").addEventListener("click", ()=>{
+        if(!allow("print", 800)) return;
+        window.print();
+      });
+
+      /* =========================================================
+        TOOLTIP: Reset Local Data
+        - What: Clears IndexedDB keys and reloads
+        - How: Add more store clears if you add more object stores later
+        - Outcome: Transparency + user control
+      ========================================================== */
+      $("#resetBtn").addEventListener("click", async ()=>{
+        if(!allow("reset", 1200)) return;
+        await kvClear().catch(()=>{});
+        showToast("Local data reset.");
+        setTimeout(()=> location.reload(), 350);
+      });
+
+      /* =========================================================
+        TOOLTIP: Scroll Progress
+        - What: Top progress bar based on scroll depth
+        - How: Keep lightweight; avoid heavy observers
+        - Outcome: Orientation in long briefs
+      ========================================================== */
+      const pbar = $("#pbar");
+      function updateProgress(){
+        const doc = document.documentElement;
+        const scrollTop = doc.scrollTop || document.body.scrollTop;
+        const height = doc.scrollHeight - doc.clientHeight;
+        const pct = height > 0 ? (scrollTop / height) : 0;
+        pbar.style.width = (pct*100).toFixed(1) + "%";
+        return pct;
+      }
+
+      /* =========================================================
+        TOOLTIP: Notes Panel (Local)
+        - What: Toggleable notes panel, stored in IndexedDB
+        - How: Extend to multiple notes per section later
+        - Outcome: Meeting utility without external docs
+      ========================================================== */
+      const notesPanel = $("#notesPanel");
+      const notesBtn = $("#notesBtn");
+      const notesArea = $("#notes");
+      const notesMeta = $("#notesMeta");
+
+      async function loadNotes(){
+        const txt = await kvGet("notes:module00") || "";
+        notesArea.value = txt;
+        const meta = await kvGet("notes:meta") || null;
+        notesMeta.textContent = meta ? ("Last saved: " + meta) : "Not saved yet.";
+      }
+      async function saveNotes(){
+        await kvSet("notes:module00", notesArea.value);
+        await kvSet("notes:meta", new Date().toLocaleString());
+        notesMeta.textContent = "Last saved: " + (await kvGet("notes:meta"));
+        bumpScore(8);
+        showToast("Notes saved (local).");
+      }
+
+      notesBtn.addEventListener("click", async ()=>{
+        if(!allow("notesToggle", 250)) return;
+        const isOpen = notesPanel.style.display !== "none";
+        notesPanel.style.display = isOpen ? "none" : "block";
+        if(!isOpen) await loadNotes();
+      });
+
+      $("#saveNotes").addEventListener("click", ()=>{ if(!allow("saveNotes", 400)) return;
+        saveNotes();
+      });
+
+      $("#exportNotes").addEventListener("click", async ()=>{
+        if(!allow("exportNotes", 800)) return;
+        const data = {
+          notes: notesArea.value,
+          meta: await kvGet("notes:meta"),
+          exportedAt: nowISO()
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "rvnrsp-module00-notes.json";
+        a.click();
+        URL.revokeObjectURL(a.href);
+        showToast("Notes exported.");
+      });
+
+      $("#clearNotes").addEventListener("click", async ()=>{
+        if(!allow("clearNotes", 600)) return;
+        notesArea.value = "";
+        await kvDel("notes:module00");
+        await kvDel("notes:meta");
+        notesMeta.textContent = "Cleared.";
+        showToast("Notes cleared.");
+      });
+
+      /* =========================================================
+        TOOLTIP: Search + Highlight
+        - What: Client-side search across data-searchable sections
+        - How: Add data-searchable to new blocks
+        - Outcome: Rapid retrieval during briefings
+      ========================================================== */
+      const q = $("#q");
+      const results = $("#results");
+
+      function clearMarks(){
+        $$("mark").forEach(m=>{
+          const t = document.createTextNode(m.textContent);
+          m.replaceWith(t);
+        });
+      }
+
+      function markText(node, term){
+        const text = node.nodeValue;
+        const idx = text.toLowerCase().indexOf(term);
+        if(idx === -1) return;
+        const before = document.createTextNode(text.slice(0, idx));
+        const mark = document.createElement("mark");
+        mark.textContent = text.slice(idx, idx + term.length);
+        const after = document.createTextNode(text.slice(idx + term.length));
+        node.replaceWith(before, mark, after);
+      }
+
+      function search(term){
+        clearMarks();
+        if(!term){
+          results.style.display = "none";
+          results.textContent = "";
+          return;
+        }
+        let hits = 0;
+        $$("[data-searchable]").forEach(sec=>{
+          const walker = document.createTreeWalker(sec, NodeFilter.SHOW_TEXT);
+          let n;
+          while((n = walker.nextNode())){
+            if(n.nodeValue && n.nodeValue.toLowerCase().includes(term)){
+              markText(n, term);
+              hits++;
+            }
+          }
+        });
+        results.style.display = "block";
+        results.innerHTML = `<b>${hits}</b> matches for “${safeText(term)}”`;
+        bumpScore(3);
+      }
+
+      q.addEventListener("input", ()=>{
+        if(!allow("search", 120)) return;
+        search(q.value.trim().toLowerCase());
+      });
+
+      $("#clearBtn").addEventListener("click", ()=>{
+        q.value = "";
+        clearMarks();
+        results.style.display = "none";
+      });
+
+      /* =========================================================
+        TOOLTIP: HUD + Progress + Gamification
+      ========================================================== */
+      const kpiRead = $("#kpiRead");
+      const mRead = $("#mRead");
+      const kpiOpen = $("#kpiOpen");
+      const mOpen = $("#mOpen");
+      const kpiScore = $("#kpiScore");
+      const mScore = $("#mScore");
+
+      let score = 0;
+      function bumpScore(n){
+        score += n;
+        kpiScore.textContent = score;
+        mScore.style.width = clamp(score,0,100) + "%";
+        kvSet("hud:score", score).catch(()=>{});
+      }
+
+      function updateHUD(){
+        const pct = updateProgress();
+        const rp = Math.round(pct*100);
+        kpiRead.textContent = rp + "%";
+        mRead.style.width = rp + "%";
+
+        const sections = $$("details.card");
+        const open = sections.filter(d=>d.open).length;
+        kpiOpen.textContent = `${open}/${sections.length}`;
+        mOpen.style.width = sections.length ? (open/sections.length*100)+"%" : "0%";
+      }
+
+      $$("details.card").forEach(d=>{
+        d.addEventListener("toggle", ()=>{
+          bumpScore(d.open ? 2 : 1);
+          updateHUD();
+        });
+      });
+
+      $("#expandAll").addEventListener("click", ()=>{
+        if(!allow("expandAll", 400)) return;
+        $$("details.card").forEach(d=>d.open = true);
+        updateHUD();
+      });
+      $("#collapseAll").addEventListener("click", ()=>{
+        if(!allow("collapseAll", 400)) return;
+        $$("details.card").forEach(d=>d.open = false);
+        updateHUD();
+      });
+      $("#topBtn").addEventListener("click", ()=>{
+        if(!allow("top", 400)) return;
+        window.scrollTo({top:0, behavior:"smooth"});
+      });
+
+      /* =========================================================
+        TOOLTIP: TOC Active State
+      ========================================================== */
+      const tocLinks = $$(".toc a");
+      function updateTOC(){
+        let activeId = null;
+        $$("details.card").forEach(sec=>{
+          const r = sec.getBoundingClientRect();
+          if(r.top < 120) activeId = sec.id;
+        });
+        tocLinks.forEach(a=>{
+          a.classList.toggle("active", a.dataset.jump === activeId);
+        });
+      }
+
+      /* =========================================================
+        TOOLTIP: Constellation Canvas
+      ========================================================== */
+      const sky = $("#sky");
+      const ctx = sky.getContext("2d");
+      function drawConstellation(){
+        ctx.clearRect(0,0,sky.width,sky.height);
+        const nodes = $$("details.card");
+        const pts = nodes.map((_,i)=>({
+          x: (i+1)/(nodes.length+1) * sky.width,
+          y: sky.height/2 + Math.sin(i)*24
+        }));
+        ctx.strokeStyle = "rgba(124,247,212,.35)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        pts.forEach((p,i)=>{
+          if(i===0) ctx.moveTo(p.x,p.y);
+          else ctx.lineTo(p.x,p.y);
+        });
+        ctx.stroke();
+        pts.forEach((p,i)=>{
+          ctx.fillStyle = nodes[i].open ? "rgba(124,247,212,.9)" : "rgba(184,193,255,.45)";
+          ctx.beginPath();
+          ctx.arc(p.x,p.y,4,0,Math.PI*2);
+          ctx.fill();
+        });
+      }
+
+      /* =========================================================
+        TOOLTIP: Init
+      ========================================================== */
+      (async function init(){
+        const theme = await kvGet("pref:theme") || "dark";
+        applyTheme(theme).catch(()=>{});
+        $("#themeBtn").addEventListener("click", async ()=>{
+          const t = document.documentElement.dataset.theme === "light" ? "dark" : "light";
+          await applyTheme(t);
+        });
+
+        score = await kvGet("hud:score") || 0;
+        kpiScore.textContent = score;
+        mScore.style.width = clamp(score,0,100) + "%";
+
+        startSplashTimer();
+        updateHUD();
+        updateTOC();
+        drawConstellation();
+
+        window.addEventListener("scroll", ()=>{
+          updateHUD();
+          updateTOC();
+        }, {passive:true});
+      })();
+    })();
+  </script>
+</body>
+</html>
