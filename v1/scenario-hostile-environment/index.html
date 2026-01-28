@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Restoration Visas – Hostile Environment Scenario</title>
+
+<style>
+body{
+  margin:0;
+  font-family: system-ui, sans-serif;
+  background:#080b14;
+  color:#e6eaff;
+}
+section{max-width:900px;margin:auto;padding:1.5rem}
+.panel{background:#131a2c;border-radius:10px;padding:1rem;margin-bottom:1rem}
+input[type=range]{width:100%}
+.output{font-family:monospace;background:#0c1124;padding:.75rem;border-radius:6px}
+</style>
+</head>
+
+<body>
+<section>
+<h1>Hostile Environment Scenario</h1>
+<p>Low trust. High scrutiny. Adversarial narratives.</p>
+</section>
+
+<section class="panel">
+<label>Public Trust (%)
+<input id="trust" type="range" min="10" max="80" value="35"></label>
+
+<label>Media Hostility (%)
+<input id="media" type="range" min="0" max="100" value="70"></label>
+
+<label>Transparency Measures (%)
+<input id="trans" type="range" min="20" max="100" value="60"></label>
+</section>
+
+<section class="panel">
+<h2>Outcome</h2>
+<div id="out" class="output"></div>
+</section>
+
+<script>
+function evalSys(){
+  const T=+trust.value;
+  const M=+media.value;
+  const X=+trans.value;
+
+  const resilience = Math.floor((T + X*1.2) - M*0.8);
+  const status = resilience > 40 ? "System holds" :
+                 resilience > 0 ? "System strained" :
+                 "Program likely suspended";
+
+  out.textContent =
+`Resilience Index: ${resilience}
+
+Assessment:
+${status}
+
+Insight:
+Trust + radical transparency dampen hostile amplification.
+Opacity magnifies attack vectors.`;
+}
+document.querySelectorAll("input").forEach(i=>i.oninput=evalSys);
+evalSys();
+</script>
+</body>
+</html>
