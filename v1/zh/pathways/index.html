@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta name="color-scheme" content="dark light" />
+  <title>模块 04 — 住房、定居与物理基础设施设计（RV-NRSP）• Foster + Navi</title>
+
+  <!--
+    零伤害与反叙事反转说明（可见 + 注释）：
+    本模块用于住房与基础设施的政策级设计与实施评估。
+    不涉及强制安置、隔离式定居或临时营地制度化。
+    无遥测、无自动发送。离线优先，仅本地存储。
+    目标：建设可尊严居住、可扩展、可转化的长期人类定居基础设施。
+  -->
+
+  <style>
+    :root{
+      --bg0:#060815;
+      --bg1:#0b1020;
+      --card:#0f1833;
+      --ink:#e9eeff;
+      --muted:#b8c1ff;
+      --dim:#8ea0ff;
+      --accent:#7cf7d4;
+      --warn:#ffd38a;
+      --bad:#ff7aa2;
+      --ok:#8bffb2;
+      --shadow: 0 14px 38px rgba(0,0,0,.36);
+      --r-xl: 22px;
+      --pad: 18px;
+      --max: 1120px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--ink);
+      background: linear-gradient(180deg, var(--bg0), var(--bg1));
+      line-height:1.7;
+    }
+
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding: 56px 16px 32px;
+    }
+
+    header, section, footer{
+      border-radius: var(--r-xl);
+      background: linear-gradient(180deg, rgba(15,24,51,.72), rgba(16,27,59,.52));
+      box-shadow: var(--shadow);
+      padding: var(--pad);
+      margin-bottom: 16px;
+    }
+
+    h1{ margin:0 0 8px; font-size:26px; }
+    h2{ margin:0 0 8px; font-size:18px; }
+    h3{ margin:14px 0 6px; font-size:15px; }
+
+    p{ color:var(--muted); margin:6px 0; }
+    ul{ margin: 8px 0 0 18px; color:var(--muted); }
+    li{ margin-bottom:4px; }
+
+    .mono{ font-family:var(--mono); color:var(--dim); }
+    .pill{
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(184,193,255,.14);
+      background: rgba(6,8,21,.22);
+      font-size:13px;
+      color:var(--muted);
+      margin-right:6px;
+      margin-top:6px;
+    }
+
+    @media print{
+      body{ background:#fff; color:#111; }
+      header, section, footer{ background:#fff; box-shadow:none; border:1px solid #ddd; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+
+    <header>
+      <h1>模块 04 — 住房、定居与物理基础设施设计</h1>
+      <p>
+        本模块解决一个实际且常被低估的问题：
+        <strong>人具体住在哪里？住多久？这些结构最终会变成什么？</strong>
+        设计目标是避免“临时性解决方案永久化”的历史失败。
+      </p>
+      <div>
+        <span class="pill">尊严定居</span>
+        <span class="pill">可转化结构</span>
+        <span class="pill">长期资产</span>
+      </div>
+    </header>
+
+    <section id="m4-01">
+      <h2>4.1 住房设计的核心原则</h2>
+      <ul>
+        <li>住房是<strong>社会基础设施</strong>，而非福利容器</li>
+        <li>临时不等于低质量</li>
+        <li>任何结构都必须有<strong>第二用途</strong></li>
+        <li>避免集中式、隔离式居住布局</li>
+      </ul>
+      <p class="mono">
+        住房失败往往不是工程问题，而是制度设计问题。
+      </p>
+    </section>
+
+    <section id="m4-02">
+      <h2>4.2 阶段 I：到达与过渡性住房</h2>
+      <p>
+        在最初 0–6 个月，首要目标是<strong>稳定而非密度最大化</strong>。
+      </p>
+      <ul>
+        <li>酒店、汽车旅馆、再利用公共建筑</li>
+        <li>模块化快速部署单元</li>
+        <li>分散式布局，避免大型营地</li>
+      </ul>
+      <p>
+        这些结构应被视为<strong>缓冲资产</strong>，
+        可在未来灾害、迁移或基础设施压力时期再次启用。
+      </p>
+    </section>
+
+    <section id="m4-03">
+      <h2>4.3 阶段 II：半永久与可转化住房</h2>
+      <p>
+        在 6 个月–3 年区间，重点转向<strong>可扩展、可转化的居住结构</strong>。
+      </p>
+      <ul>
+        <li>预制住宅（可拆卸、可移动）</li>
+        <li>低层、高密度但人性化布局</li>
+        <li>与地方建筑规范兼容</li>
+      </ul>
+      <p>
+        设计要求这些住房在项目结束后可转为：
+      </p>
+      <ul>
+        <li>地方可负担住房</li>
+        <li>教师、医护、应急人员宿舍</li>
+        <li>灾害备用住房</li>
+      </ul>
+    </section>
+
+    <section id="m4-04">
+      <h2>4.4 阶段 III：社区整合与永久定居</h2>
+      <p>
+        当参与者进入长期居留或公民路径时，
+        住房策略应<strong>融入既有社区</strong>，而非形成新隔离区。
+      </p>
+      <ul>
+        <li>分散购置或建设</li>
+        <li>与地方住房市场协调</li>
+        <li>避免扭曲本地价格</li>
+      </ul>
+      <p class="mono">
+        成功标志：无法从街景中区分“项目住房”。
+      </p>
+    </section>
+
+    <section id="m4-05">
+      <h2>4.5 物理基础设施协同</h2>
+      <ul>
+        <li>水与污水系统容量评估</li>
+        <li>能源（优先被动式与分布式）</li>
+        <li>道路与公共交通接入</li>
+      </ul>
+      <p>
+        所有基础设施投资应同时服务
+        <strong>新居民与既有社区</strong>，
+        以避免政治阻力。
+      </p>
+    </section>
+
+    <section id="m4-06">
+      <h2>4.6 常见住房失败模式（规避清单）</h2>
+      <ul>
+        <li>永久化的临时营地</li>
+        <li>远离就业与服务的选址</li>
+        <li>忽视维护与运营成本</li>
+        <li>以“效率”为名牺牲尊严</li>
+      </ul>
+      <p class="mono">
+        住房一旦失败，将拖累所有其他政策目标。
+      </p>
+    </section>
+
+    <section id="m4-07">
+      <h2>4.7 对决策层的住房摘要</h2>
+      <p>
+        模块 04 强调：住房并非配套细节，
+        而是决定 RV-NRSP 社会接受度与长期成功的<strong>核心变量</strong>。
+      </p>
+      <p>
+        正确的住房设计将“安置成本”转化为
+        <b>可继承的公共资产</b>。
+      </p>
+    </section>
+
+    <footer>
+      <b>过渡说明：</b><br/>
+      模块 05 将进入<strong>生态修复、再造林与粮食系统设计</strong>，
+      详细说明“种什么、在哪里、如何避免生态失败”。
+    </footer>
+
+  </main>
+</body>
+</html>
