@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta name="color-scheme" content="dark light" />
+  <title>模块 08 — 风险分析、失败模式与政治攻击面预判（RV-NRSP）• Foster + Navi</title>
+
+  <!--
+    零伤害与反叙事反转说明（可见 + 注释）：
+    本模块用于风险识别、失败模式分析与政治现实评估。
+    不用于恐吓、操纵舆论或压制异议。
+    目标是提前识别系统脆弱性，并以透明、合规方式加以缓解。
+    无遥测、无自动发送。离线优先，仅本地存储。
+  -->
+
+  <style>
+    :root{
+      --bg0:#060815;
+      --bg1:#0b1020;
+      --card:#0f1833;
+      --ink:#e9eeff;
+      --muted:#b8c1ff;
+      --dim:#8ea0ff;
+      --accent:#7cf7d4;
+      --warn:#ffd38a;
+      --bad:#ff7aa2;
+      --ok:#8bffb2;
+      --shadow: 0 14px 38px rgba(0,0,0,.36);
+      --r-xl: 22px;
+      --pad: 18px;
+      --max: 1120px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--ink);
+      background: linear-gradient(180deg, var(--bg0), var(--bg1));
+      line-height:1.7;
+    }
+
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding: 56px 16px 32px;
+    }
+
+    header, section, footer{
+      border-radius: var(--r-xl);
+      background: linear-gradient(180deg, rgba(15,24,51,.72), rgba(16,27,59,.52));
+      box-shadow: var(--shadow);
+      padding: var(--pad);
+      margin-bottom: 16px;
+    }
+
+    h1{ margin:0 0 8px; font-size:26px; }
+    h2{ margin:0 0 8px; font-size:18px; }
+    h3{ margin:14px 0 6px; font-size:15px; }
+
+    p{ color:var(--muted); margin:6px 0; }
+    ul{ margin: 8px 0 0 18px; color:var(--muted); }
+    li{ margin-bottom:4px; }
+
+    .mono{ font-family:var(--mono); color:var(--dim); }
+    .pill{
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(184,193,255,.14);
+      background: rgba(6,8,21,.22);
+      font-size:13px;
+      color:var(--muted);
+      margin-right:6px;
+      margin-top:6px;
+    }
+
+    .warn{ color:var(--warn); }
+    .bad{ color:var(--bad); }
+    .ok{ color:var(--ok); }
+
+    @media print{
+      body{ background:#fff; color:#111; }
+      header, section, footer{ background:#fff; box-shadow:none; border:1px solid #ddd; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+
+    <header>
+      <h1>模块 08 — 风险分析、失败模式与政治攻击面预判</h1>
+      <p>
+        本模块面对一个现实问题：
+        <strong>即便设计正确，RV-NRSP 仍将遭遇哪些失败路径与政治攻击？</strong>
+        目标不是消除风险，而是<strong>在风险出现前识别、缓冲并限制其破坏半径</strong>。
+      </p>
+      <div>
+        <span class="pill">风险预判</span>
+        <span class="pill">失败模式</span>
+        <span class="pill">政治现实</span>
+      </div>
+    </header>
+
+    <section id="m8-01">
+      <h2>8.1 风险分类框架</h2>
+      <p>
+        为避免模糊讨论，本模块将风险划分为五类：
+      </p>
+      <ul>
+        <li>设计风险（系统本身的结构缺陷）</li>
+        <li>执行风险（能力、协调或资源不足）</li>
+        <li>感知风险（公众与媒体理解偏差）</li>
+        <li>政治风险（意识形态与利益冲突）</li>
+        <li>演化风险（规模化后产生的新行为）</li>
+      </ul>
+      <p class="mono">
+        未分类的风险，几乎无法被治理。
+      </p>
+    </section>
+
+    <section id="m8-02">
+      <h2>8.2 关键失败模式（FMEA 视角）</h2>
+      <p>
+        历史上类似项目最常见的失败模式包括：
+      </p>
+      <ul>
+        <li>目标扩散：从明确使命滑向“什么都做”</li>
+        <li>指标劫持：用易量化指标替代真实成效</li>
+        <li>能力透支：扩展速度超过组织学习速度</li>
+        <li>治理漂移：例外规则逐渐成为常态</li>
+      </ul>
+      <p class="mono">
+        大多数失败并非源于恶意，而是结构性惯性。
+      </p>
+    </section>
+
+    <section id="m8-03">
+      <h2>8.3 公众与媒体误读风险</h2>
+      <p>
+        以下叙事风险高度可预期：
+      </p>
+      <ul>
+        <li>将项目简化为“以工换居留”的错误表述</li>
+        <li>忽视自愿性与有偿性，类比历史强制劳动</li>
+        <li>夸大成本，忽略长期资产与避免支出</li>
+      </ul>
+      <p>
+        这些风险并非通过“更强宣传”解决，
+        而需通过<strong>设计本身的可解释性</strong>缓解。
+      </p>
+    </section>
+
+    <section id="m8-04">
+      <h2>8.4 政治攻击面分析</h2>
+      <p>
+        RV-NRSP 可能同时遭遇来自不同方向的攻击：
+      </p>
+      <ul>
+        <li>财政保守派：质疑前期成本与效率</li>
+        <li>意识形态派别：将其贴上“奖励移民”或“国家干预”标签</li>
+        <li>既得利益方：担忧土地、劳动力或预算再分配</li>
+      </ul>
+      <p class="mono">
+        攻击面越广，越需要跨阵营可辩护性。
+      </p>
+    </section>
+
+    <section id="m8-05">
+      <h2>8.5 风险缓解设计原则</h2>
+      <p>
+        本项目内建以下风险缓解策略：
+      </p>
+      <ul>
+        <li>试点优先，避免“一次性全国承诺”</li>
+        <li>明确退出与暂停机制，防止政治绑架</li>
+        <li>用审计与阶段评估替代口号式承诺</li>
+        <li>允许失败被记录，而非被掩盖</li>
+      </ul>
+      <p>
+        能承认失败的系统，反而更不容易失败。
+      </p>
+    </section>
+
+    <section id="m8-06">
+      <h2>8.6 演化风险与二阶效应</h2>
+      <p>
+        成功本身也会产生风险，包括：
+      </p>
+      <ul>
+        <li>地方政府过度依赖项目资源</li>
+        <li>参与轨道被视为默认就业方案</li>
+        <li>生态资产引发新的土地价值争议</li>
+      </ul>
+      <p class="mono">
+        二阶效应需要治理弹性，而非一次性设计。
+      </p>
+    </section>
+
+    <section id="m8-07">
+      <h2>8.7 对决策层的风险摘要</h2>
+      <p>
+        本模块的结论是：
+        <strong>RV-NRSP 的最大风险不是反对，而是失控的成功或被误解的意图。</strong>
+      </p>
+      <p>
+        通过提前承认脆弱性、限制扩展节奏并嵌入纠偏机制，
+        该项目可在高政治噪声环境中保持长期可行性。
+      </p>
+    </section>
+
+    <footer>
+      <b>过渡说明：</b><br/>
+      模块 09 将进入<strong>实施路线图、阶段指标与决策闸门</strong>，
+      明确从“想法”走向“可执行国家项目”的具体路径。
+    </footer>
+
+  </main>
+</body>
+</html>
