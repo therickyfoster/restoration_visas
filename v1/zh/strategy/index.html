@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta name="color-scheme" content="dark light" />
+  <title>模块 06 — 劳动力组织、技能认证与社会资本路径（RV-NRSP）• Foster + Navi</title>
+
+  <!--
+    零伤害与反叙事反转说明（可见 + 注释）：
+    本模块用于政策层面的劳动力、技能与社会资本设计。
+    不涉及强制劳动、惩罚性换权、或任何形式的剥削结构。
+    所有参与均为自愿、有偿、可退出、可审计。
+    无遥测、无自动发送。离线优先，仅本地存储。
+  -->
+
+  <style>
+    :root{
+      --bg0:#060815;
+      --bg1:#0b1020;
+      --card:#0f1833;
+      --ink:#e9eeff;
+      --muted:#b8c1ff;
+      --dim:#8ea0ff;
+      --accent:#7cf7d4;
+      --warn:#ffd38a;
+      --bad:#ff7aa2;
+      --ok:#8bffb2;
+      --shadow: 0 14px 38px rgba(0,0,0,.36);
+      --r-xl: 22px;
+      --pad: 18px;
+      --max: 1120px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--ink);
+      background: linear-gradient(180deg, var(--bg0), var(--bg1));
+      line-height:1.7;
+    }
+
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding: 56px 16px 32px;
+    }
+
+    header, section, footer{
+      border-radius: var(--r-xl);
+      background: linear-gradient(180deg, rgba(15,24,51,.72), rgba(16,27,59,.52));
+      box-shadow: var(--shadow);
+      padding: var(--pad);
+      margin-bottom: 16px;
+    }
+
+    h1{ margin:0 0 8px; font-size:26px; }
+    h2{ margin:0 0 8px; font-size:18px; }
+    h3{ margin:14px 0 6px; font-size:15px; }
+
+    p{ color:var(--muted); margin:6px 0; }
+    ul{ margin: 8px 0 0 18px; color:var(--muted); }
+    li{ margin-bottom:4px; }
+
+    .mono{ font-family:var(--mono); color:var(--dim); }
+    .pill{
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(184,193,255,.14);
+      background: rgba(6,8,21,.22);
+      font-size:13px;
+      color:var(--muted);
+      margin-right:6px;
+      margin-top:6px;
+    }
+
+    @media print{
+      body{ background:#fff; color:#111; }
+      header, section, footer{ background:#fff; box-shadow:none; border:1px solid #ddd; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+
+    <header>
+      <h1>模块 06 — 劳动力组织、技能认证与社会资本路径</h1>
+      <p>
+        本模块解决的问题不是“如何用人”，
+        而是<strong>如何在国家项目中形成可持续的人类能力积累</strong>。
+        参与者不是消耗性劳动力，而是<strong>长期社会资产</strong>。
+      </p>
+      <div>
+        <span class="pill">自愿参与</span>
+        <span class="pill">技能积累</span>
+        <span class="pill">社会资本</span>
+      </div>
+    </header>
+
+    <section id="m6-01">
+      <h2>6.1 劳动力设计的基本原则</h2>
+      <ul>
+        <li>参与必须<strong>自愿</strong>，且随时可退出</li>
+        <li>所有工作均为<strong>有偿</strong>并符合劳动安全标准</li>
+        <li>劳动设计应以<strong>技能增长</strong>为核心目标</li>
+        <li>路径清晰，避免“无出口”的项目陷阱</li>
+      </ul>
+      <p class="mono">
+        强制或模糊的劳动结构会迅速破坏政治合法性。
+      </p>
+    </section>
+
+    <section id="m6-02">
+      <h2>6.2 参与轨道（Tracks）的设计逻辑</h2>
+      <p>
+        RV-NRSP 不依赖单一劳动形式，
+        而是通过<strong>多轨道参与结构</strong>降低失败风险：
+      </p>
+      <ul>
+        <li>生态修复与再造林轨道</li>
+        <li>模块化与预制住房建设轨道</li>
+        <li>水管理、土壤修复与基础设施维护轨道</li>
+        <li>物流、仓储与食品处理支持轨道</li>
+      </ul>
+      <p>
+        多轨道结构使不同背景的参与者都能找到
+        与其能力相匹配的切入点。
+      </p>
+    </section>
+
+    <section id="m6-03">
+      <h2>6.3 技能分层与渐进式复杂度</h2>
+      <p>
+        所有轨道应设计为<strong>分层技能结构</strong>：
+      </p>
+      <ul>
+        <li>基础层：安全、工具使用、流程理解</li>
+        <li>中级层：独立执行、团队协作、质量控制</li>
+        <li>高级层：培训他人、项目协调、现场管理</li>
+      </ul>
+      <p class="mono">
+        技能复杂度随时间提升，防止“低技能锁定”。
+      </p>
+    </section>
+
+    <section id="m6-04">
+      <h2>6.4 技能认证与可转移性</h2>
+      <p>
+        所有技能训练应产生<strong>可验证的认证记录</strong>：
+      </p>
+      <ul>
+        <li>与国家职业资格或行业标准对齐</li>
+        <li>可被私营部门与地方政府识别</li>
+        <li>不绑定单一项目或单一雇主</li>
+      </ul>
+      <p>
+        认证的核心价值在于：
+        <strong>让参与者在项目结束后更具流动性</strong>。
+      </p>
+    </section>
+
+    <section id="m6-05">
+      <h2>6.5 社会资本的形成机制</h2>
+      <p>
+        除了技能，项目还系统性地生成<strong>社会资本</strong>：
+      </p>
+      <ul>
+        <li>跨文化团队协作经验</li>
+        <li>本地社区嵌入与信任建立</li>
+        <li>与公共机构的制度性接触</li>
+      </ul>
+      <p>
+        这些“软资产”显著提高长期就业与社会稳定概率。
+      </p>
+    </section>
+
+    <section id="m6-06">
+      <h2>6.6 防止剥削与结构性风险</h2>
+      <p>
+        模块 06 明确规避以下风险模式：
+      </p>
+      <ul>
+        <li>以居留权或福利作为劳动交换条件</li>
+        <li>缺乏清晰时间边界的“无限项目”</li>
+        <li>技能无法外部验证或转移</li>
+        <li>参与者对规则缺乏理解或申诉渠道</li>
+      </ul>
+      <p class="mono">
+        合规不是附加成本，而是系统稳定条件。
+      </p>
+    </section>
+
+    <section id="m6-07">
+      <h2>6.7 对决策层的劳动力摘要</h2>
+      <p>
+        本模块表明：
+        RV-NRSP 的劳动力体系不是廉价劳动力池，
+        而是<strong>国家级人力资本生成机制</strong>。
+      </p>
+      <p>
+        成功实施将产生一批
+        <strong>具备技能、网络与制度信任的长期居民</strong>，
+        显著降低未来社会整合成本。
+      </p>
+    </section>
+
+    <footer>
+      <b>过渡说明：</b><br/>
+      模块 07 将进入<strong>治理结构、审计机制与反失控设计</strong>，
+      重点讨论如何在扩展规模时保持透明、可控与公众信任。
+    </footer>
+
+  </main>
+</body>
+</html>
