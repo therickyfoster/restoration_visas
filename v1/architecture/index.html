@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Module 02 — Systems Map & Flow Architecture (RV-NRSP) • Foster + Navi</title>
+
+  <!--
+    Zero-Harm & Anti-Inversion Note:
+    This module documents system structure, not persuasion tactics.
+    It does NOT prescribe coercion, enforcement, surveillance, or pressure.
+    All participation assumed voluntary, paid, rights-preserving, and auditable.
+    No telemetry. No auto-send. Offline-first by design.
+  -->
+
+  <style>
+    :root{
+      --bg0:#060815;
+      --bg1:#0b1020;
+      --card:#0f1833;
+      --ink:#e9eeff;
+      --muted:#b8c1ff;
+      --dim:#8ea0ff;
+      --accent:#7cf7d4;
+      --warn:#ffd38a;
+      --bad:#ff7aa2;
+      --ok:#8bffb2;
+      --shadow: 0 14px 38px rgba(0,0,0,.36);
+      --r-xl: 22px;
+      --pad: 18px;
+      --max: 1120px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--ink);
+      background: linear-gradient(180deg, var(--bg0), var(--bg1));
+      line-height:1.7;
+    }
+
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding: 56px 16px 32px;
+    }
+
+    header{
+      margin-bottom: 18px;
+      padding: 18px;
+      border-radius: var(--r-xl);
+      background: linear-gradient(180deg, rgba(15,24,51,.75), rgba(16,27,59,.55));
+      box-shadow: var(--shadow);
+    }
+    header h1{
+      margin:0 0 8px;
+      font-size: 26px;
+      letter-spacing:.2px;
+    }
+    header p{
+      margin:0;
+      color:var(--muted);
+      max-width: 90ch;
+    }
+
+    section{
+      margin-top: 16px;
+      padding: var(--pad);
+      border-radius: var(--r-xl);
+      background: linear-gradient(180deg, rgba(15,24,51,.72), rgba(16,27,59,.52));
+      box-shadow: var(--shadow);
+    }
+
+    h2{
+      margin:0 0 8px;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+    h3{
+      margin:14px 0 6px;
+      font-size: 15px;
+      letter-spacing:.2px;
+    }
+
+    p{ color:var(--muted); }
+    ul{ margin: 8px 0 0 18px; color:var(--muted); }
+    li{ margin-bottom:4px; }
+
+    .mono{ font-family:var(--mono); color:var(--dim); }
+
+    .legend{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:10px;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .pill{
+      border-radius:999px;
+      padding:6px 10px;
+      border:1px solid rgba(184,193,255,.14);
+      background: rgba(6,8,21,.22);
+    }
+    .ok{ color:var(--ok); }
+    .warn{ color:var(--warn); }
+    .bad{ color:var(--bad); }
+
+    footer{
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: var(--r-xl);
+      background: rgba(6,8,21,.20);
+      color:var(--muted);
+      font-size: 13px;
+    }
+
+    @media print{
+      body{ background:#fff; color:#111; }
+      header, section, footer{ background:#fff; box-shadow:none; border:1px solid #ddd; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+
+    <header>
+      <h1>Module 02 — Systems Map & Flow Architecture</h1>
+      <p>
+        This module translates the RV-NRSP concept into an explicit systems architecture.
+        It identifies core stocks, flows, delays, control points, and failure modes so the program
+        can be audited, stress-tested, and piloted without ambiguity.
+      </p>
+    </header>
+
+    <section id="s-01">
+      <h2>2.1 System Boundary Definition</h2>
+      <p>
+        The RV-NRSP system boundary intentionally includes only elements the state can reasonably influence.
+        External geopolitical forces, commodity markets, and climate variance are treated as exogenous inputs.
+      </p>
+      <ul>
+        <li><b>Included:</b> immigration intake, settlement support, land stewardship programs, public land use, training pipelines</li>
+        <li><b>Excluded:</b> global food prices, private land speculation, international conflict dynamics</li>
+      </ul>
+      <p class="mono">
+        Design rule: control what is controllable; buffer against what is not.
+      </p>
+    </section>
+
+    <section id="s-02">
+      <h2>2.2 Core Stocks (State Variables)</h2>
+      <p>
+        Stocks represent accumulations that change slowly and determine long-term system behavior.
+      </p>
+      <ul>
+        <li><b>Participant Population:</b> individuals/families enrolled in RV-NRSP</li>
+        <li><b>Stabilized Housing Units:</b> temporary + transitional shelter capacity</li>
+        <li><b>Restored Land Area:</b> hectares under regenerative management</li>
+        <li><b>Productive Tree Stock:</b> fruit/nut trees surviving to maturity</li>
+        <li><b>Local Skills Capital:</b> certified skills in construction, stewardship, and maintenance</li>
+        <li><b>Public Trust:</b> perceived legitimacy and fairness of the program</li>
+      </ul>
+      <p class="mono">
+        Stocks are slow to build, slow to destroy — policy must respect their inertia.
+      </p>
+    </section>
+
+    <section id="s-03">
+      <h2>2.3 Primary Flows</h2>
+      <p>
+        Flows increase or decrease stocks. Poorly governed flows create bottlenecks and backlash.
+      </p>
+      <h3>Inflow Examples</h3>
+      <ul>
+        <li>Visa approvals → participant population</li>
+        <li>Capital allocation → housing units</li>
+        <li>Training throughput → skills capital</li>
+        <li>Planting + survival → productive tree stock</li>
+      </ul>
+
+      <h3>Outflow Examples</h3>
+      <ul>
+        <li>Program exits (residency completion)</li>
+        <li>Housing depreciation or loss</li>
+        <li>Tree mortality (climate, pests, mismanagement)</li>
+        <li>Participant burnout or disengagement</li>
+      </ul>
+    </section>
+
+    <section id="s-04">
+      <h2>2.4 Feedback Loops</h2>
+      <p>
+        RV-NRSP depends on reinforcing loops while dampening destabilizing ones.
+      </p>
+
+      <h3>Reinforcing (Positive) Loops</h3>
+      <ul>
+        <li>Skills → better housing → higher retention → stronger stewardship</li>
+        <li>Tree survival → local food → health → productivity</li>
+        <li>Visible success → public trust → political support → stable funding</li>
+      </ul>
+
+      <h3>Balancing (Stabilizing) Loops</h3>
+      <ul>
+        <li>Intake caps adjusted to housing capacity</li>
+        <li>Land assignment limited by stewardship bandwidth</li>
+        <li>Training pace constrained by instructor availability</li>
+      </ul>
+    </section>
+
+    <section id="s-05">
+      <h2>2.5 Time Delays (Critical for Political Interpretation)</h2>
+      <p>
+        Most benefits of RV-NRSP are delayed relative to costs. Mismanaging expectations is a primary failure risk.
+      </p>
+      <ul>
+        <li><b>0–6 months:</b> stabilization costs dominate, visible outputs low</li>
+        <li><b>6–36 months:</b> skills, housing, and land improvements visible</li>
+        <li><b>3–7 years:</b> food yield, health benefits, disaster-cost reduction emerge</li>
+      </ul>
+      <p class="mono">
+        Delay blindness is the single greatest threat to long-term programs.
+      </p>
+    </section>
+
+    <section id="s-06">
+      <h2>2.6 Choke Points & Capacity Constraints</h2>
+      <p>
+        System failure typically occurs at capacity mismatches, not intent.
+      </p>
+      <ul>
+        <li class="warn"><b>Housing bottlenecks:</b> intake exceeds shelter readiness</li>
+        <li class="warn"><b>Training saturation:</b> participants exceed instructor capacity</li>
+        <li class="warn"><b>Land access delays:</b> permitting lags deployment</li>
+        <li class="warn"><b>Administrative drag:</b> unclear authority across departments</li>
+      </ul>
+      <p>
+        Pilot design must deliberately operate below theoretical maximum throughput.
+      </p>
+    </section>
+
+    <section id="s-07">
+      <h2>2.7 Failure Modes & Effects (FMEA Snapshot)</h2>
+      <p>
+        Anticipated failure modes and mitigation logic:
+      </p>
+      <ul>
+        <li class="bad"><b>Coercion optics:</b> mitigate with voluntary tracks + citizen opt-in</li>
+        <li class="bad"><b>Labor exploitation claims:</b> mitigate with wage parity + audits</li>
+        <li class="bad"><b>Ecological underperformance:</b> mitigate with species diversity + monitoring</li>
+        <li class="bad"><b>Political reversal:</b> mitigate with early visible wins</li>
+      </ul>
+      <p class="mono">
+        Failure modes are not moral failings — they are design signals.
+      </p>
+    </section>
+
+    <section id="s-08">
+      <h2>2.8 Control Levers Available to Government</h2>
+      <p>
+        Governments retain multiple levers to steer system behavior without coercion:
+      </p>
+      <ul>
+        <li>Intake rate modulation</li>
+        <li>Funding pacing and tranche release</li>
+        <li>Training standards and certification rules</li>
+        <li>Land-use prioritization</li>
+        <li>Public reporting cadence</li>
+      </ul>
+      <p>
+        Effective governance emphasizes small, frequent adjustments rather than abrupt shifts.
+      </p>
+    </section>
+
+    <section id="s-09">
+      <h2>2.9 Summary for Systems Review</h2>
+      <p>
+        RV-NRSP is structurally viable if treated as a dynamic system rather than a static program.
+        Its risks are knowable, its levers are available, and its benefits are cumulative.
+      </p>
+      <p>
+        The architecture rewards patience, transparency, and capacity-aware scaling.
+      </p>
+    </section>
+
+    <footer>
+      <b>Transition Note:</b>  
+      Module 03 will formalize <b>economic modeling and treasury hooks</b>, including cost curves,
+      avoided-expenditure pathways, asset service-life assumptions, and pilot-budget envelopes
+      suitable for finance ministry scrutiny.
+    </footer>
+
+  </main>
+</body>
+</html>
