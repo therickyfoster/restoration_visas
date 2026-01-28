@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Module 05 — Pilot Design & Deployment Blueprint (RV-NRSP) • Foster + Navi</title>
+
+  <!--
+    Zero-Harm & Anti-Inversion Note:
+    This pilot blueprint prioritizes voluntariness, wage parity, safety,
+    and reversible decision-making. It explicitly avoids coercion,
+    forced settlement, surveillance, or residency leverage.
+    Offline-first. No telemetry. No auto-send.
+  -->
+
+  <style>
+    :root{
+      --bg0:#060815;
+      --bg1:#0b1020;
+      --card:#0f1833;
+      --ink:#e9eeff;
+      --muted:#b8c1ff;
+      --dim:#8ea0ff;
+      --accent:#7cf7d4;
+      --warn:#ffd38a;
+      --bad:#ff7aa2;
+      --ok:#8bffb2;
+      --shadow: 0 14px 38px rgba(0,0,0,.36);
+      --r-xl: 22px;
+      --pad: 18px;
+      --max: 1120px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--ink);
+      background: linear-gradient(180deg, var(--bg0), var(--bg1));
+      line-height:1.7;
+    }
+
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding: 56px 16px 32px;
+    }
+
+    header{
+      margin-bottom: 18px;
+      padding: 18px;
+      border-radius: var(--r-xl);
+      background: linear-gradient(180deg, rgba(15,24,51,.75), rgba(16,27,59,.55));
+      box-shadow: var(--shadow);
+    }
+    header h1{
+      margin:0 0 8px;
+      font-size: 26px;
+      letter-spacing:.2px;
+    }
+    header p{
+      margin:0;
+      color:var(--muted);
+      max-width: 96ch;
+    }
+
+    section{
+      margin-top: 16px;
+      padding: var(--pad);
+      border-radius: var(--r-xl);
+      background: linear-gradient(180deg, rgba(15,24,51,.72), rgba(16,27,59,.52));
+      box-shadow: var(--shadow);
+    }
+
+    h2{
+      margin:0 0 8px;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+    h3{
+      margin:14px 0 6px;
+      font-size: 15px;
+      letter-spacing:.2px;
+    }
+
+    p{ color:var(--muted); }
+    ul{ margin: 8px 0 0 18px; color:var(--muted); }
+    li{ margin-bottom:4px; }
+
+    .mono{ font-family:var(--mono); color:var(--dim); }
+
+    .pill{
+      display:inline-block;
+      margin-top:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(184,193,255,.14);
+      background: rgba(6,8,21,.22);
+      font-size:13px;
+      color:var(--muted);
+    }
+    .ok{ color:var(--ok); }
+    .warn{ color:var(--warn); }
+    .bad{ color:var(--bad); }
+
+    footer{
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: var(--r-xl);
+      background: rgba(6,8,21,.20);
+      color:var(--muted);
+      font-size: 13px;
+    }
+
+    @media print{
+      body{ background:#fff; color:#111; }
+      header, section, footer{ background:#fff; box-shadow:none; border:1px solid #ddd; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+
+    <header>
+      <h1>Module 05 — Pilot Design & Deployment Blueprint</h1>
+      <p>
+        This module specifies a bounded, reversible pilot for the Restoration Visas &
+        National Regenerative Settlement Program (RV-NRSP). The objective is proof of
+        function—not scale—under real administrative, fiscal, and political conditions.
+      </p>
+    </header>
+
+    <section id="p-01">
+      <h2>5.1 Pilot Objectives (Explicit & Measurable)</h2>
+      <ul>
+        <li>Demonstrate safe intake-to-settlement workflow</li>
+        <li>Stabilize participants within 90 days</li>
+        <li>Restore a defined land parcel with high survival rates</li>
+        <li>Produce visible public goods within one budget cycle</li>
+        <li>Generate auditable cost and outcome data</li>
+      </ul>
+      <p class="mono">
+        Design rule: success must be legible within 12–18 months.
+      </p>
+    </section>
+
+    <section id="p-02">
+      <h2>5.2 Pilot Geography Selection Criteria</h2>
+      <p>
+        Pilot geography is selected for controllability, not symbolism.
+      </p>
+      <ul>
+        <li>Public or crown land with clear jurisdiction</li>
+        <li>Existing infrastructure access (roads, utilities)</li>
+        <li>Local governance consent</li>
+        <li>Low land-use conflict risk</li>
+        <li>Demonstrable ecological upside</li>
+      </ul>
+      <span class="pill ok">Avoid politically saturated sites</span>
+    </section>
+
+    <section id="p-03">
+      <h2>5.3 Intake Band & Population Envelope</h2>
+      <p>
+        Initial intake must remain deliberately small.
+      </p>
+      <ul>
+        <li><b>Participants:</b> 150–300 individuals (families preferred)</li>
+        <li><b>Phasing:</b> staggered arrival in 3–4 cohorts</li>
+        <li><b>Buffer:</b> reserve housing capacity ≥ 20%</li>
+      </ul>
+      <p class="mono">
+        Intake is constrained by housing readiness, not visa enthusiasm.
+      </p>
+    </section>
+
+    <section id="p-04">
+      <h2>5.4 Arrival & Stabilization (Day 0–90)</h2>
+      <ul>
+        <li>Government-backed hotel or transitional lodging</li>
+        <li>Guaranteed meals / stipend during orientation</li>
+        <li>Healthcare enrollment and documentation</li>
+        <li>Skills assessment and placement planning</li>
+      </ul>
+      <p>
+        Early stability is the strongest predictor of long-term success.
+      </p>
+    </section>
+
+    <section id="p-05">
+      <h2>5.5 Housing & Shelter Deployment</h2>
+      <p>
+        Shelter is treated as infrastructure, not charity.
+      </p>
+      <ul>
+        <li>Modular or prefab units with rapid deployment</li>
+        <li>Participant-assisted construction where appropriate</li>
+        <li>Clear transition from temporary to semi-permanent housing</li>
+      </ul>
+      <span class="pill warn">No self-build without safety oversight</span>
+    </section>
+
+    <section id="p-06">
+      <h2>5.6 Land Restoration Scope</h2>
+      <p>
+        Restoration targets must be conservative and survivable.
+      </p>
+      <ul>
+        <li>Initial land area sized to labor + skills capacity</li>
+        <li>Mixed-species fruit and support trees</li>
+        <li>Water access and soil prep prioritized</li>
+      </ul>
+      <p class="mono">
+        Survival rate &gt; planting volume.
+      </p>
+    </section>
+
+    <section id="p-07">
+      <h2>5.7 Governance & Command Structure</h2>
+      <ul>
+        <li><b>Pilot Director:</b> single accountable authority</li>
+        <li><b>Interdepartmental cell:</b> immigration, housing, agriculture</li>
+        <li><b>Independent monitor:</b> ethics, labor, safety</li>
+      </ul>
+      <p>
+        Clear authority prevents paralysis and blame diffusion.
+      </p>
+    </section>
+
+    <section id="p-08">
+      <h2>5.8 Budget Envelope (Pilot Order-of-Magnitude)</h2>
+      <ul>
+        <li>Arrival & stabilization</li>
+        <li>Housing units & infrastructure</li>
+        <li>Training & supervision</li>
+        <li>Land preparation & planting</li>
+        <li>Administration & oversight</li>
+      </ul>
+      <p class="mono">
+        Budget is capped; scope adjusts, not vice versa.
+      </p>
+    </section>
+
+    <section id="p-09">
+      <h2>5.9 Key Performance Indicators (KPIs)</h2>
+      <ul>
+        <li>Housing stability at 6 and 12 months</li>
+        <li>Participant retention and voluntary continuation</li>
+        <li>Tree survival rates after first and second seasons</li>
+        <li>Cost per participant vs baseline alternatives</li>
+        <li>Public trust indicators</li>
+      </ul>
+    </section>
+
+    <section id="p-10">
+      <h2>5.10 Failure Containment & Exit</h2>
+      <p>
+        A credible pilot includes a graceful shutdown plan.
+      </p>
+      <ul>
+        <li>Participant transition pathways protected</li>
+        <li>Assets repurposed for housing or conservation</li>
+        <li>Public reporting of lessons learned</li>
+      </ul>
+      <p class="mono">
+        Reversibility preserves political courage.
+      </p>
+    </section>
+
+    <section id="p-11">
+      <h2>5.11 Summary for Executive Decision</h2>
+      <p>
+        This pilot is intentionally modest, auditable, and humane.
+        Its value lies in demonstrated function, not immediate scale.
+      </p>
+      <p>
+        Approval authorizes learning—not irrevocable commitment.
+      </p>
+    </section>
+
+    <footer>
+      <b>Stack Completion Note:</b><br />
+      With Module 05, the RV-NRSP briefing stack now supports
+      executive review, treasury scrutiny, legal audit, and pilot authorization.
+      Subsequent modules (optional) may address scale-up, international coordination,
+      and long-horizon food sovereignty modeling.
+    </footer>
+
+  </main>
+</body>
+</html>
