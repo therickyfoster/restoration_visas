@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta name="color-scheme" content="dark light" />
+  <title>模块 07 — 治理结构、审计机制与反失控设计（RV-NRSP）• Foster + Navi</title>
+
+  <!--
+    零伤害与反叙事反转说明（可见 + 注释）：
+    本模块用于公共治理、审计与制度安全设计。
+    不涉及监控型治理、权力集中或不可问责结构。
+    目标是在规模化条件下维持透明、可控、可纠偏的公共项目。
+    无遥测、无自动发送。离线优先，仅本地存储。
+  -->
+
+  <style>
+    :root{
+      --bg0:#060815;
+      --bg1:#0b1020;
+      --card:#0f1833;
+      --ink:#e9eeff;
+      --muted:#b8c1ff;
+      --dim:#8ea0ff;
+      --accent:#7cf7d4;
+      --warn:#ffd38a;
+      --bad:#ff7aa2;
+      --ok:#8bffb2;
+      --shadow: 0 14px 38px rgba(0,0,0,.36);
+      --r-xl: 22px;
+      --pad: 18px;
+      --max: 1120px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--ink);
+      background: linear-gradient(180deg, var(--bg0), var(--bg1));
+      line-height:1.7;
+    }
+
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding: 56px 16px 32px;
+    }
+
+    header, section, footer{
+      border-radius: var(--r-xl);
+      background: linear-gradient(180deg, rgba(15,24,51,.72), rgba(16,27,59,.52));
+      box-shadow: var(--shadow);
+      padding: var(--pad);
+      margin-bottom: 16px;
+    }
+
+    h1{ margin:0 0 8px; font-size:26px; }
+    h2{ margin:0 0 8px; font-size:18px; }
+    h3{ margin:14px 0 6px; font-size:15px; }
+
+    p{ color:var(--muted); margin:6px 0; }
+    ul{ margin: 8px 0 0 18px; color:var(--muted); }
+    li{ margin-bottom:4px; }
+
+    .mono{ font-family:var(--mono); color:var(--dim); }
+    .pill{
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(184,193,255,.14);
+      background: rgba(6,8,21,.22);
+      font-size:13px;
+      color:var(--muted);
+      margin-right:6px;
+      margin-top:6px;
+    }
+
+    @media print{
+      body{ background:#fff; color:#111; }
+      header, section, footer{ background:#fff; box-shadow:none; border:1px solid #ddd; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+
+    <header>
+      <h1>模块 07 — 治理结构、审计机制与反失控设计</h1>
+      <p>
+        本模块回答的问题是：
+        <strong>当 RV-NRSP 从试点走向规模化时，如何防止权力集中、资源滥用与制度漂移？</strong>
+        核心目标不是“管理更多”，而是<strong>在复杂系统中保持可控性与公众信任</strong>。
+      </p>
+      <div>
+        <span class="pill">可审计治理</span>
+        <span class="pill">权力制衡</span>
+        <span class="pill">规模安全</span>
+      </div>
+    </header>
+
+    <section id="m7-01">
+      <h2>7.1 治理设计的首要原则</h2>
+      <ul>
+        <li>权力必须<strong>可追踪、可分散、可撤销</strong></li>
+        <li>决策结构应支持<strong>纠错而非掩盖错误</strong></li>
+        <li>治理复杂度应与项目规模同步，而非超前集中</li>
+        <li>公众合法性优先于操作便利性</li>
+      </ul>
+      <p class="mono">
+        治理失败通常源于“效率优先、制衡滞后”。
+      </p>
+    </section>
+
+    <section id="m7-02">
+      <h2>7.2 多层治理结构（避免单点失效）</h2>
+      <p>
+        RV-NRSP 采用<strong>多层治理模型</strong>，以降低系统性风险：
+      </p>
+      <ul>
+        <li>国家层：政策授权、预算框架、跨部门协调</li>
+        <li>区域层：项目实施、资源调配、合规监督</li>
+        <li>现场层：安全、质量控制与即时反馈</li>
+      </ul>
+      <p>
+        各层级职权边界清晰，避免上下级权责混淆。
+      </p>
+    </section>
+
+    <section id="m7-03">
+      <h2>7.3 审计不是惩罚机制，而是系统感知器官</h2>
+      <p>
+        本项目将审计定义为<strong>持续性系统反馈</strong>：
+      </p>
+      <ul>
+        <li>财务审计：资金流向、成本结构、长期负债</li>
+        <li>绩效审计：生态存活率、培训完成率、参与留存</li>
+        <li>治理审计：决策透明度、投诉处理、纠偏速度</li>
+      </ul>
+      <p class="mono">
+        审计的目标是早期发现偏移，而非事后追责。
+      </p>
+    </section>
+
+    <section id="m7-04">
+      <h2>7.4 数据最小化与反监控设计</h2>
+      <p>
+        为防止治理系统滑向监控化，
+        RV-NRSP 明确采用<strong>数据最小化原则</strong>：
+      </p>
+      <ul>
+        <li>仅收集履行职责所需的数据</li>
+        <li>避免行为评分、社会信用类机制</li>
+        <li>数据用途、保留期与访问权限清晰定义</li>
+      </ul>
+      <p>
+        治理透明不等于个体暴露。
+      </p>
+    </section>
+
+    <section id="m7-05">
+      <h2>7.5 申诉、退出与纠偏通道</h2>
+      <p>
+        所有参与者与工作人员必须具备：
+      </p>
+      <ul>
+        <li>清晰的申诉路径与响应时限</li>
+        <li>无惩罚的退出机制</li>
+        <li>对治理失误的正式纠偏流程</li>
+      </ul>
+      <p class="mono">
+        无退出权的系统，最终只剩服从者。
+      </p>
+    </section>
+
+    <section id="m7-06">
+      <h2>7.6 防止规模化失控的设计策略</h2>
+      <p>
+        模块 07 预设以下<strong>反失控机制</strong>：
+      </p>
+      <ul>
+        <li>分阶段扩展，禁止“一次性全国铺开”</li>
+        <li>强制性中期评估与暂停节点</li>
+        <li>预算与规模挂钩，而非政治周期</li>
+        <li>外部独立评估的制度化</li>
+      </ul>
+      <p>
+        规模应由能力与信任驱动，而非承诺。
+      </p>
+    </section>
+
+    <section id="m7-07">
+      <h2>7.7 对决策层的治理摘要</h2>
+      <p>
+        本模块的核心结论是：
+        <strong>RV-NRSP 的成败取决于治理质量，而非初始愿景。</strong>
+      </p>
+      <p>
+        一个可纠偏、可审计、可退出的系统，
+        才能在长期内保持政治合法性与公众支持。
+      </p>
+    </section>
+
+    <footer>
+      <b>过渡说明：</b><br/>
+      模块 08 将进入<strong>风险分析、失败模式与政治攻击面预判</strong>，
+      系统性拆解反对意见、误用风险与应对策略。
+    </footer>
+
+  </main>
+</body>
+</html>
