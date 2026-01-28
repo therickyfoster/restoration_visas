@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta name="color-scheme" content="dark light" />
+  <title>模块 01 — 政策原理、系统逻辑与理论基础（RV-NRSP）• Foster + Navi</title>
+
+  <!--
+    零伤害与反叙事反转说明（可见 + 注释）：
+    本模块用于政策制定、系统建模与理性审查。
+    不用于操纵、胁迫、去人化、恐吓或政治攻击。
+    无遥测、无自动发送。离线优先，仅本地存储。
+    目的：提高政策质量与长期治理稳健性。
+  -->
+
+  <style>
+    :root{
+      --bg0:#060815;
+      --bg1:#0b1020;
+      --card:#0f1833;
+      --ink:#e9eeff;
+      --muted:#b8c1ff;
+      --dim:#8ea0ff;
+      --accent:#7cf7d4;
+      --warn:#ffd38a;
+      --bad:#ff7aa2;
+      --ok:#8bffb2;
+      --shadow: 0 14px 38px rgba(0,0,0,.36);
+      --r-xl: 22px;
+      --pad: 18px;
+      --max: 1120px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--ink);
+      background: linear-gradient(180deg, var(--bg0), var(--bg1));
+      line-height:1.7;
+    }
+
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding: 56px 16px 32px;
+    }
+
+    header{
+      margin-bottom: 18px;
+      padding: 18px;
+      border-radius: var(--r-xl);
+      background: linear-gradient(180deg, rgba(15,24,51,.75), rgba(16,27,59,.55));
+      box-shadow: var(--shadow);
+    }
+    header h1{
+      margin:0 0 8px;
+      font-size: 26px;
+      letter-spacing:.2px;
+    }
+    header p{
+      margin:0;
+      color:var(--muted);
+      max-width: 100ch;
+    }
+
+    section{
+      margin-top: 16px;
+      padding: var(--pad);
+      border-radius: var(--r-xl);
+      background: linear-gradient(180deg, rgba(15,24,51,.72), rgba(16,27,59,.52));
+      box-shadow: var(--shadow);
+    }
+
+    h2{
+      margin:0 0 8px;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+    h3{
+      margin:14px 0 6px;
+      font-size: 15px;
+      letter-spacing:.2px;
+    }
+
+    p{ color:var(--muted); }
+    ul{ margin: 8px 0 0 18px; color:var(--muted); }
+    li{ margin-bottom:4px; }
+
+    .mono{ font-family:var(--mono); color:var(--dim); }
+
+    .pill{
+      display:inline-block;
+      margin-top:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(184,193,255,.14);
+      background: rgba(6,8,21,.22);
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    footer{
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: var(--r-xl);
+      background: rgba(6,8,21,.20);
+      color:var(--muted);
+      font-size: 13px;
+    }
+
+    @media print{
+      body{ background:#fff; color:#111; }
+      header, section, footer{ background:#fff; box-shadow:none; border:1px solid #ddd; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+
+    <header>
+      <h1>模块 01 — 政策原理、系统逻辑与理论基础</h1>
+      <p>
+        本模块将 RV-NRSP 从“概念方案”推进为<strong>可经受审查的政策结构</strong>。
+        它明确该计划依托的经济学、系统科学、公共治理与历史经验基础，
+        以便在财政、法律与跨部门评估中保持稳健。
+      </p>
+    </header>
+
+    <section id="m-01">
+      <h2>1.1 本模块的目的</h2>
+      <p>
+        模块 01 的目标是回答一个核心问题：
+        <b>为什么这种方案在系统层面是合理的？</b>
+      </p>
+      <ul>
+        <li>为财政部门提供理论与逻辑支撑</li>
+        <li>为政策评估者提供可验证假设</li>
+        <li>为反对性审查提前建立防御</li>
+      </ul>
+      <p class="mono">
+        本模块不讨论“是否善良”，只讨论“是否有效、可持续、可治理”。
+      </p>
+    </section>
+
+    <section id="m-02">
+      <h2>1.2 核心系统假设</h2>
+      <p>
+        RV-NRSP 基于以下系统性假设构建：
+      </p>
+      <ul>
+        <li>人类定居行为可被视为长期基础设施投资</li>
+        <li>生态修复具有可量化的公共服务价值</li>
+        <li>前期稳定投入可显著降低后期治理成本</li>
+        <li>多目标系统若被分割治理，整体效率下降</li>
+      </ul>
+      <p class="mono">
+        政策失败往往源于假设未被显性化。
+      </p>
+    </section>
+
+    <section id="m-03">
+      <h2>1.3 系统动力学视角</h2>
+      <p>
+        在系统动力学中，RV-NRSP 被建模为一个<strong>正反馈占优</strong>的结构：
+      </p>
+      <ul>
+        <li>人口 → 劳动 → 生态资产 → 风险降低 → 成本下降</li>
+        <li>住房稳定 → 健康改善 → 公共支出下降</li>
+        <li>粮食本地化 → 供应链韧性 → 价格波动降低</li>
+      </ul>
+      <p>
+        这些反馈在时间维度上呈现延迟，但一旦跨过阈值，将进入自我强化区间。
+      </p>
+      <p class="mono">
+        关键并非即时回报，而是避免“系统性崩溃点”。
+      </p>
+    </section>
+
+    <section id="m-04">
+      <h2>1.4 公共经济学基础</h2>
+      <p>
+        从公共经济学角度，RV-NRSP 将多项传统“支出”转化为
+        <b>公共资产与公共服务流</b>：
+      </p>
+      <ul>
+        <li>树木与土壤：长期生态服务（降温、固碳、防洪）</li>
+        <li>住房：稳定性外溢效应（治安、健康、教育）</li>
+        <li>粮食资产：价格稳定与营养安全</li>
+      </ul>
+      <p>
+        这些资产具有<strong>非排他性与部分非竞争性</strong>特征，
+        符合公共投资逻辑。
+      </p>
+    </section>
+
+    <section id="m-05">
+      <h2>1.5 避免成本（Avoided Cost）逻辑</h2>
+      <p>
+        传统预算往往忽视“未发生的成本”。
+        RV-NRSP 明确以避免成本作为核心评估维度：
+      </p>
+      <ul>
+        <li>减少灾害恢复与应急支出</li>
+        <li>降低长期医疗与社会服务负担</li>
+        <li>减少住房不稳定带来的治理摩擦</li>
+      </ul>
+      <p class="mono">
+        在复杂系统中，“避免损失”往往比“创造收益”更具确定性。
+      </p>
+    </section>
+
+    <section id="m-06">
+      <h2>1.6 历史与制度类比</h2>
+      <p>
+        虽然 RV-NRSP 是现代设计，但其逻辑并非无先例：
+      </p>
+      <ul>
+        <li>国家级定居与基础设施计划</li>
+        <li>公共造林与水利工程</li>
+        <li>以工作换取长期社会整合的模式</li>
+      </ul>
+      <p>
+        差异在于：本方案将<strong>权利保障、审计透明与生态科学</strong>
+        明确嵌入结构之中。
+      </p>
+    </section>
+
+    <section id="m-07">
+      <h2>1.7 为什么不是分散应对？</h2>
+      <p>
+        若将移民、住房、生态、粮食分别处理：
+      </p>
+      <ul>
+        <li>成本被重复计入多个部门</li>
+        <li>责任边界模糊，激励失真</li>
+        <li>系统风险在接口处放大</li>
+      </ul>
+      <p>
+        RV-NRSP 的核心优势在于<strong>减少接口数量</strong>，
+        从而降低治理复杂度。
+      </p>
+    </section>
+
+    <section id="m-08">
+      <h2>1.8 可证伪性与政策谦逊</h2>
+      <p>
+        本方案明确承认：它必须被验证，而非被相信。
+      </p>
+      <ul>
+        <li>通过试点验证关键假设</li>
+        <li>若指标未达标，可暂停或调整</li>
+        <li>不将失败合理化为“价值冲突”</li>
+      </ul>
+      <p class="mono">
+        可证伪性是长期合法性的前提。
+      </p>
+    </section>
+
+    <section id="m-09">
+      <h2>1.9 对高级官员的总结</h2>
+      <p>
+        模块 01 表明：RV-NRSP 并非依赖情感或意识形态，
+        而是建立在<strong>系统效率、公共资产逻辑与风险管理</strong>之上。
+      </p>
+      <p>
+        如果失败，它应因指标失败而被修正；
+        如果成功，其成功机制是可解释、可复制的。
+      </p>
+    </section>
+
+    <footer>
+      <b>过渡说明：</b><br />
+      模块 02 将进入<strong>实施结构与治理架构</strong>，
+      详细说明跨部门协作、责任划分与运行边界。
+    </footer>
+
+  </main>
+</body>
+</html>
